@@ -20,7 +20,7 @@ class AuthController extends Controller
         ]);
 
         if( $validator->fails() ) {
-            return response()->json([ 'errors' => $validator->errors() ], 200);
+            return response()->json([ 'errors' => $validator->errors() ], 400);
         }
 
         /*User::create([
@@ -46,7 +46,7 @@ class AuthController extends Controller
         if(!$user->id) {
             return response()->json([
                 'error' => 'Erro ao cadastrar usuário'
-            ], 200);
+            ], 400);
         }
 
         return response()->json([
