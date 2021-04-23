@@ -1,8 +1,20 @@
 import React from 'react';
 import { change, login } from '../../store/actions/auth.action'
-import { Redirect } from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 import { Typography, TextField, Button } from '@material-ui/core'
 import { useSelector, useDispatch } from 'react-redux'
+import { withStyles } from '@material-ui/core/styles'
+
+const RegisterButton = withStyles({
+    root: {
+        color: "#fff",
+        backgroundColor: "#28a745",
+        "&:hover": {
+            backgroundColor: "#218838",
+            color: "#fff"
+        }
+    }
+})(Button);
 
 export default function Auth() {
     const dispatch = useDispatch();
@@ -53,6 +65,17 @@ export default function Auth() {
                         >
                             Entrar
                         </Button>
+
+                        <RegisterButton
+                            variant="contained"
+                            fullWidth
+                            size="large"
+                            className="mt-4 mb-4"
+                            component={Link}
+                            to="/register"
+                        >
+                            Registrar
+                        </RegisterButton>
 
                         {(success) &&
                             <Redirect to="/vehicles" />
