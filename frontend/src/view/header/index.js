@@ -42,96 +42,97 @@ export default function Header(props) {
 
     return (
         <>
-            {(window.innerWidth < 577) ?
-                <AppBar position="fixed">
-                    <Toolbar>
-                        <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setState({open: true})}>
-                            <MdMenu />
-                        </IconButton>
+            {(window.innerWidth < 577) 
+                ?
+                    <AppBar position="fixed">
+                        <Toolbar>
+                            <IconButton edge="start" color="inherit" aria-label="menu" onClick={() => setState({open: true})}>
+                                <MdMenu />
+                            </IconButton>
 
-                        <Typography variant="h6">
-                            {props.title}
-                        </Typography>                        
-                    </Toolbar>
-                </AppBar>
+                            <Typography variant="h6">
+                                {props.title}
+                            </Typography>                        
+                        </Toolbar>
+                    </AppBar>
                 :
-                <nav className="header navbar navbar-expand-lg navbar-light bg-white p-0">
-                    <div className="container">
-                        <Link classsName="navbar-brand" to='/'>
-                            <img src="/logo.png" alt="CAR CRM" height="40" />
-                        </Link>
+                    <nav className="header navbar navbar-expand-lg navbar-light bg-white p-0">
+                        <div className="container">
+                            <Link className="navbar-brand" to='/'>
+                                <img src="/logo.png" alt="CAR CRM" height="40" />
+                            </Link>
 
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/vehicles">
-                                    <FaCar className="icon-lg mr-2" /> Veículos
-                                </Link>
-                            </li>
+                            <ul className="navbar-nav">
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/vehicles">
+                                        <FaCar className="icon-lg mr-2" /> Veículos
+                                    </Link>
+                                </li>
 
-                            <li className="nav-item">
-                                <button className="nav-link bg-white" to="/vehicles">
-                                    <FaUsers className="icon-lg mr-2" /> Proprietários
-                                </button>
-                            </li>
+                                <li className="nav-item">
+                                    <button className="nav-link bg-white" to="/vehicles">
+                                        <FaUsers className="icon-lg mr-2" /> Proprietários
+                                    </button>
+                                </li>
 
-                            <li className="nav-item dropdown">
-                                <Link className="nav-link dropdown-toggle" to="#" data-toogle="dropdow">
-                                    <FaLaptop className="icon-lg mr-2" /> Site
-                                </Link>
+                                <li className="nav-item dropdown">
+                                    <Link className="nav-link dropdown-toggle" to="#" data-toogle="dropdow">
+                                        <FaLaptop className="icon-lg mr-2" /> Site
+                                    </Link>
 
-                                <MenuList className="dropdown-menu">
-                                    <MenuItem className="dropdown-item">
-                                        Otimização para o Google
-                                    </MenuItem>
+                                    <MenuList className="dropdown-menu">
+                                        <MenuItem className="dropdown-item">
+                                            Otimização para o Google
+                                        </MenuItem>
 
-                                    <MenuItem className="dropdown-item">
-                                        Unidades e Telefones
-                                    </MenuItem>
+                                        <MenuItem className="dropdown-item">
+                                            Unidades e Telefones
+                                        </MenuItem>
 
-                                    <MenuItem className="dropdown-item">
-                                        Minha Logo
-                                    </MenuItem>
+                                        <MenuItem className="dropdown-item">
+                                            Minha Logo
+                                        </MenuItem>
 
-                                    <MenuItem className="dropdown-item">
-                                        Domínio
-                                    </MenuItem>
+                                        <MenuItem className="dropdown-item">
+                                            Domínio
+                                        </MenuItem>
 
-                                    <MenuItem className="dropdown-item">
-                                        Configurações
-                                    </MenuItem>
-                                </MenuList>
-                            </li>
+                                        <MenuItem className="dropdown-item">
+                                            Configurações
+                                        </MenuItem>
+                                    </MenuList>
+                                </li>
 
-                            <li className="nav-item dropdown">
-                                <Link className="nav-link dropdown-toggle" to="#" data-toogle="dropdow">
-                                    <FaCreditCard className="icon-lg mr-2" /> Financeiro
-                                </Link>
+                                <li className="nav-item dropdown">
+                                    <Link className="nav-link dropdown-toggle" to="#" data-toogle="dropdow">
+                                        <FaCreditCard className="icon-lg mr-2" /> Financeiro
+                                    </Link>
 
-                                <MenuList className="dropdown-menu">
-                                    <MenuItem className="dropdown-item">
-                                        Meu Plano
-                                    </MenuItem>
+                                    <MenuList className="dropdown-menu">
+                                        <MenuItem className="dropdown-item">
+                                            Meu Plano
+                                        </MenuItem>
 
-                                    <MenuItem className="dropdown-item">
-                                        Minhas Transações
-                                    </MenuItem>                                    
-                                </MenuList>
-                            </li>
+                                        <MenuItem className="dropdown-item">
+                                            Minhas Transações
+                                        </MenuItem>                                    
+                                    </MenuList>
+                                </li>
 
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/">
-                                    <FaWhatsapp className="icon-lg mr-2" /> Ajuda
-                                </Link>
-                            </li>
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/">
+                                        <FaWhatsapp className="icon-lg mr-2" /> Ajuda
+                                    </Link>
+                                </li>
 
-                            <li className="nav-item">
-                                <Link className="nav-link" to="/">
-                                    <FaSignOutAlt className="icon-lg mr-2" /> Sair
-                                </Link>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>                
+                                <li className="nav-item">
+                                    <Link className="nav-link" to="/">
+                                        <FaSignOutAlt className="icon-lg mr-2" /> Sair
+                                    </Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </nav>                
             }            
 
             <Drawer anchor="left" open={state.open} onClose={() => setState({open: false})}>
