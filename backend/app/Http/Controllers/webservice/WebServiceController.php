@@ -9,7 +9,7 @@ use Curl;
 class WebServiceController extends Controller
 {
     public function cep(Request $request) 
-    {
+    {                        
         $cep = str_replace("-", "", $request->cep);
 
         $response = Curl::to('viacep.com.br/ws/' . $cep . '/json')->get();
@@ -19,7 +19,7 @@ class WebServiceController extends Controller
         if ($response) {
             $data = (object) [
                 'uf' => $response->uf,
-                'zipCode' => $response->zipCode,
+                'zipCode' => $response->cep,
                 'city' => $response->localidade
             ];
 
