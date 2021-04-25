@@ -89,3 +89,12 @@ export const destroy = (id)  => dispatch => {
             }
         })
 }
+
+//CEP
+export const cep = (zipCode) => dispatch => {        
+    if (zipCode.length > 8) {
+        return HttpAuth.post('/webservice/cep', {
+            cep: zipCode
+        }).then(response => typeof response != 'undefined' && dispatch(change(response.data)));
+    }
+}

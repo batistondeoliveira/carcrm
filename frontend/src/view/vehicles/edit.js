@@ -1,6 +1,6 @@
 import React from 'react';
-import { store, show, change } from '../../store/actions/vehicles.action';
-import { CircularProgress, TextField, InputAdornment } from '@material-ui/core';
+import { store, show, change, cep } from '../../store/actions/vehicles.action';
+import { CircularProgress, TextField, Select, MenuItem, InputAdornment } from '@material-ui/core';
 import Header from '../header';
 import MaskedInput from 'react-text-mask';
 
@@ -90,6 +90,12 @@ export default function VehicleEdit(props) {
                                                         dispatch(change({zipCode: input.target.value}));
                                                         if (input.target.value.length > 8) {
                                                             setState({isLoadingCep: true})
+                                                            dispatch(cep(input.target.value)).then(response => response && setState({isLoadingCep: false}))
+                                                            if (data.error.zipCode) {
+                                                                delete data.error.zipCode;
+                                                                delete data.error.uf;
+                                                                delete data.error.city;
+                                                            }
                                                         }
                                                     },
                                                     endAdornment: (
@@ -109,6 +115,73 @@ export default function VehicleEdit(props) {
                                                 </strong>
                                             }
                                         </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-9 form-group">
+                                            <label className="label-custom">
+                                                CIDADE
+                                            </label>
+
+                                            <TextField
+                                                error={(data.error.city) && true}
+                                                disabled
+                                                value={data.vehicle.city}
+                                            />
+
+                                            {(data.error.city) && 
+                                                <strong className="text-danger">
+                                                    {data.error.city[0]}
+                                                </strong>
+                                            }
+                                        </div>
+
+                                        <div className="col-md-3 form-group">
+                                            <label className="label-custom">
+                                                UF
+                                            </label>
+
+                                            <TextField
+                                                error={(data.error.uf) && true}
+                                                disabled
+                                                value={data.vehicle.uf}
+                                            />
+
+                                            {(data.error.uf) && 
+                                                <strong className="text-danger">
+                                                    {data.error.uf[0]}
+                                                </strong>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <h3 className="font-weight-normal mt-4 mb-4">
+                                    Dados do Veículo
+                                </h3>
+
+                                <div className="card card-body">
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            CATEGORIA
+                                        </label> 
+
+                                        <Select
+                                            error={data.error.vehicle_type && true}
+                                            value={data.vehicle.vehicle_type}
+                                            onChange={(event) => {
+
+                                            }}
+                                        >
+                                            {(data.vehicle_types.map(item => {
+                                                <MenuItem
+                                                    key={item.id}
+                                                    value={item.value}
+                                                >
+                                                    {item.label}
+                                                </MenuItem>
+                                            }))}
+                                        </Select>
                                     </div>
                                 </div>
                             </div>
