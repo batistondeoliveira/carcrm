@@ -18,7 +18,7 @@ class VehicleUploadController extends Controller
         $this->user = Auth()->guard('api')->user();        
     }
 
-    public function create(Request $request)
+    public function store(Request $request)
     {
         $file = $request->file('file');
         $fileName = md5(uniqid(time())) . strrchr($file->getClientOriginalName(), '.');

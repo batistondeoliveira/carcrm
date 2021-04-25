@@ -10,7 +10,7 @@ Route::apiResources([
 ]);
 
 Route::prefix('upload')->group(function () {
-    Route::resource('vehicle', VehicleUploadController::class)->only(['create', 'update', 'destroy']);
+    Route::resource('vehicle', VehicleUploadController::class)->only(['store', 'update', 'destroy']);
 });
 
 Route::get('vehicles/{vehicle_type}/brand', [VehiclesController::class, 'brand']);
