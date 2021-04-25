@@ -553,35 +553,136 @@ export default function VehicleEdit(props) {
                                         </div>
                                     </div>
                                 </div>
-                            
+
+                                {(data.vehicle.vehicle_type) && 
+                                    <>                                    
+                                        <h3 className="font-weight-normal mt-4 mb-4">
+                                            Itens e Opcionais
+                                        </h3>
+
+                                        <div className="card card-body mt-4 mb-4">
+                                            <div className="row">
+                                                {data.features.map(item => (item.vehicle_type_id === data.vehicle.vehicle_type) && (
+                                                    <div key={item.id} className="col-md-6">
+                                                        <FormControlLabel
+                                                            control={
+                                                                <Checkbox
+                                                                    checked={data.vehicle.vehicle_features[item.value] ? true : false}
+                                                                    onChange={() => {
+                                                                        let checked = data.vehicle.vehicle_features[item.value] 
+                                                                            ? delete data.vehicle.vehicle_features[item.value] 
+                                                                            : {[item.value] : item}
+
+                                                                        dispatch(change({ vehicle_features: {
+                                                                            ...data.vehicle.vehicle_features,
+                                                                            ...checked
+                                                                        } }))
+                                                                    }}
+                                                                />
+                                                            }
+                                                            label={item.label}
+                                                        />
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </>
+                                }
+
                                 <h3 className="font-weight-normal mt-4 mb-4">
-                                    Itens e Opcionais
+                                    Financeiro
                                 </h3>
 
                                 <div className="card card-body mt-4 mb-4">
-                                    <div className="row">
-                                        {data.features.map(item => (item.vehicle_type_id === data.vehicle.vehicle_type) && (
-                                            <div key={item.id} className="col-md-6">
-                                                <FormControlLabel
-                                                    control={
-                                                        <Checkbox
-                                                            checked={data.vehicle.vehicle_features[item.value] ? true : false}
-                                                            onChange={() => {
-                                                                let checked = data.vehicle.vehicle_features[item.value] 
-                                                                    ? delete data.vehicle.vehicle_features[item.value] 
-                                                                    : {[item.value] : item}
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            ESTADO FINANCEIRO
+                                        </label>
 
-                                                                dispatch(change({ vehicle_features: {
-                                                                    ...data.vehicle.vehicle_features,
-                                                                    ...checked
-                                                                } }))
-                                                            }}
-                                                        />
+                                        <div className="row">
+                                            {data.financial.map(item => (
+                                                <div key={item.id} className="col-md-6">
+                                                    <FormControlLabel
+                                                        control={
+                                                            <Checkbox
+                                                                checked={data.vehicle.vehicle_financial[item.value] ? true : false}
+                                                                onChange={() => {
+                                                                    let checked = data.vehicle.vehicle_financial[item.value] 
+                                                                        ? delete data.vehicle.vehicle_financial[item.value] 
+                                                                        : {[item.value] : item}
+
+                                                                    dispatch(change({ vehicle_financial: {
+                                                                        ...data.vehicle.vehicle_financial,
+                                                                        ...checked
+                                                                    } }))
+                                                                }}
+                                                            />
+                                                        }
+                                                        label={item.label}
+                                                    />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6">
+                                            <label className="label-custom">
+                                                PREÇO
+                                            </label>
+
+                                            <TextField
+                                                type="tel"
+                                                name="R$ "
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                    value: data.vehicle.vehicle_price || '',
+                                                    onChange: input => {
+                                                        dispatch(change({ vehicle_price: input.target.value }))
+                                                        if (data.error.vehicle_price) {
+                                                            delete data.error.vehicle_price
+                                                        }
                                                     }
-                                                    label={item.label}
-                                                />
-                                            </div>
-                                        ))}
+                                                }}
+                                            />
+
+                                            {(data.error.vehicle_price) &&
+                                                <strong className="text-danger">
+                                                    {data.error.vehicle_price[0]}
+                                                </strong>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <h3 className="font-weight-normal mt-4 mb-4">
+                                    Descrição do anúncio
+                                </h3>
+                                
+                                <div className="card card-body">
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            TÍTULO
+                                        </label>
+
+                                        <TextField
+                                            value={data.vehicle.title}
+                                            onChange={input => dispatch(change({ title: input.target.value }))}
+                                        />
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            DESCRIÇÃO
+                                        </label>
+
+                                        <TextField
+                                            multiline
+                                            rows="5"
+                                            rowsMax="5"
+                                            value={data.vehicle.description || ''}
+                                            onChange={input => dispatch(change({ description: input.target.value }))}
+                                        />
                                     </div>
                                 </div>
                             </div>
