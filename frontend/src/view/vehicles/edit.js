@@ -10,9 +10,19 @@ import {
     cep 
 } from '../../store/actions/vehicles.action';
 
-import { CircularProgress, TextField, Select, MenuItem, InputAdornment } from '@material-ui/core';
+import { 
+    CircularProgress, 
+    TextField, 
+    Select, 
+    MenuItem, 
+    InputAdornment, 
+    FormControlLabel, 
+    Checkbox 
+} from '@material-ui/core';
+
 import Header from '../header';
 import MaskedInput from 'react-text-mask';
+import NumberFormat from 'react-number-format';
 
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -22,12 +32,32 @@ const TextMaskCustom = (props) => {
 
     return (
         <MaskedInput
-            {...other}
+            {...other}            
             ref={ref => {
                 inputRef(ref ? ref.inputElement : null)
             }}
             mask={mask}
             guide={false}
+        />
+    );
+}
+
+const NumberFormatCustom = (props) => {
+    const { inputRef, onChange, ...other } = props;
+
+    return (
+        <NumberFormat
+            {...other}
+            onValueChange={values => {
+                onChange({
+                    target: {
+                        value: values.value
+                    }
+                })
+            }}
+            decimalSeparator=","
+            thousandSeparator="."
+            prefix={other.name}
         />
     );
 }
@@ -171,7 +201,7 @@ export default function VehicleEdit(props) {
                                     Dados do Veículo
                                 </h3>
 
-                                <div className="card card-body">
+                                <div className="card card-body">                                    
                                     <div className="form-group">
                                         <label className="label-custom">
                                             CATEGORIA
@@ -352,6 +382,206 @@ export default function VehicleEdit(props) {
                                                 </strong>
                                             }
                                         </div>
+                                    </div>
+                                </div>
+
+                                <div className="card card-body mt-4">
+                                    <div className="row">
+                                        {/* INICIO MOSTRA SE FOR CARRO */}
+                                        {(data.vehicle.vehicle_type) === 2020 &&
+                                            <>
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label-custom">
+                                                        CÂMBIO
+                                                    </label>                                                                                                
+
+                                                    <Select
+                                                        value={data.vehicle.vehicle_gearbox || ''}
+                                                        onChange={event => dispatch(change({ vehicle_gearbox: event.target.value }))}
+                                                    >
+                                                        {data.gear_box.map(item => (
+                                                            <MenuItem 
+                                                                key={item.id} 
+                                                                value={item.value}
+                                                            >
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </div>
+
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label-custom">
+                                                        COMBUSTÍVEL
+                                                    </label> 
+
+                                                    <Select
+                                                        value={data.vehicle.vehicle_fuel || ''}
+                                                        onChange={event => dispatch(change({ vehicle_fuel: event.target.value }))}
+                                                    >
+                                                        {data.fuel.map(item => (
+                                                            <MenuItem 
+                                                                key={item.id} 
+                                                                value={item.value}
+                                                            >
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </div>
+
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label-custom">
+                                                        DIREÇÃO
+                                                    </label> 
+
+                                                    <Select
+                                                        value={data.vehicle.vehicle_steering || ''}
+                                                        onChange={event => dispatch(change({ vehicle_steering: event.target.value }))}
+                                                    >
+                                                        {data.car_steering.map(item => (
+                                                            <MenuItem 
+                                                                key={item.id} 
+                                                                value={item.value}
+                                                            >
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </div>
+
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label-custom">
+                                                        POTÊNCIA DO MOTOR
+                                                    </label> 
+
+                                                    <Select
+                                                        value={data.vehicle.vehicle_motorpower || ''}
+                                                        onChange={event => dispatch(change({ vehicle_motorpower: event.target.value }))}
+                                                    >
+                                                        {data.motor_power.map(item => (
+                                                            <MenuItem 
+                                                                key={item.id} 
+                                                                value={item.value}
+                                                            >
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </div>
+
+                                                <div className="col-md-6 form-group">
+                                                    <label className="label-custom">
+                                                        PORTAS
+                                                    </label> 
+
+                                                    <Select
+                                                        value={data.vehicle.vehicle_doors || ''}
+                                                        onChange={event => dispatch(change({ vehicle_doors: event.target.value }))}
+                                                    >
+                                                        {data.doors.map(item => (
+                                                            <MenuItem 
+                                                                key={item.id} 
+                                                                value={item.value}
+                                                            >
+                                                                {item.label}
+                                                            </MenuItem>
+                                                        ))}
+                                                    </Select>
+                                                </div>
+                                            </>
+                                        }
+                                        {/* TERMINA SE FOR CARRO */}
+
+                                        {/* INICIO MOSTRA SE FOR MOTO */}
+                                        {(data.vehicle.vehicle_type === 2060) &&
+                                            <div className="col-md-6 form-group">
+                                                <label className="label-custom">
+                                                    CILINDRADAS
+                                                </label>                                                                                                
+
+                                                <Select
+                                                    value={data.vehicle.vehicle_cubiccms || ''}
+                                                    onChange={event => dispatch(change({ vehicle_cubiccms: event.target.value }))}
+                                                >
+                                                    {data.cubiccms.map(item => (
+                                                        <MenuItem 
+                                                            key={item.id} 
+                                                            value={item.value}
+                                                        >
+                                                            {item.label}
+                                                        </MenuItem>
+                                                    ))}
+                                                </Select>
+                                            </div>
+                                        }
+                                        {/* TERMINA SE FOR MOTO */}
+
+                                        <div className="col-md-6 form-group">
+                                            <label className="label-custom">
+                                                COR
+                                            </label>                                                                                                
+
+                                            <Select
+                                                value={data.vehicle.vehicle_color || ''}
+                                                onChange={event => dispatch(change({ vehicle_color: event.target.value }))}
+                                            >
+                                                {data.carcolor.map(item => (
+                                                    <MenuItem 
+                                                        key={item.id} 
+                                                        value={item.value}
+                                                    >
+                                                        {item.label}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </div>
+
+                                        <div className="col-md-6 form-group">
+                                            <label className="label-custom">
+                                                QUILOMETRAGEM
+                                            </label>                                                                                                
+
+                                            <TextField
+                                                type="tel"
+                                                InputProps={{
+                                                    inputComponent: NumberFormatCustom,
+                                                    value: data.vehicle.vehicle_mileage || '',
+                                                    onChange: input => dispatch(change({ vehicle_mileage: input.target.value }))
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            
+                                <h3 className="font-weight-normal mt-4 mb-4">
+                                    Itens e Opcionais
+                                </h3>
+
+                                <div className="card card-body mt-4 mb-4">
+                                    <div className="row">
+                                        {data.features.map(item => (item.vehicle_type_id === data.vehicle.vehicle_type) && (
+                                            <div key={item.id} className="col-md-6">
+                                                <FormControlLabel
+                                                    control={
+                                                        <Checkbox
+                                                            checked={data.vehicle.vehicle_features[item.value] ? true : false}
+                                                            onChange={() => {
+                                                                let checked = data.vehicle.vehicle_features[item.value] 
+                                                                    ? delete data.vehicle.vehicle_features[item.value] 
+                                                                    : {[item.value] : item}
+
+                                                                dispatch(change({ vehicle_features: {
+                                                                    ...data.vehicle.vehicle_features,
+                                                                    ...checked
+                                                                } }))
+                                                            }}
+                                                        />
+                                                    }
+                                                    label={item.label}
+                                                />
+                                            </div>
+                                        ))}
                                     </div>
                                 </div>
                             </div>
