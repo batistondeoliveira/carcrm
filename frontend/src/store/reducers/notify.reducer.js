@@ -9,7 +9,6 @@ const initialState = {
     msg: ''
 }
 
-//eslint-disable-next-line 
 export default (state = initialState, { type, payload }) => {
     switch (type) {
         case actionTypes.CHANGE:
