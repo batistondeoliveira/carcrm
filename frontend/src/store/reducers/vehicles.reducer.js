@@ -5,6 +5,9 @@ const initialState = {
         data: []
     },
     vehicle: {},
+    vehicle_brand: [],
+    vehicle_model: [],
+    vehicle_version: [],
     success: false,
     error: {}
 }
@@ -31,7 +34,7 @@ export default (state = initialState, { type, payload, isLoadMore }) => {
             return {
                 ...state,
                 vehicle: {
-                    ...state.vehicles,
+                    ...state.vehicle,
                     ...payload
                 }
             }

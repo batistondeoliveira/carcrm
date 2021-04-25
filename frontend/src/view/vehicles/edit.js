@@ -1,5 +1,15 @@
 import React from 'react';
-import { store, show, change, cep } from '../../store/actions/vehicles.action';
+
+import { 
+    store, 
+    show, 
+    change, 
+    brand, 
+    model, 
+    version,
+    cep 
+} from '../../store/actions/vehicles.action';
+
 import { CircularProgress, TextField, Select, MenuItem, InputAdornment } from '@material-ui/core';
 import Header from '../header';
 import MaskedInput from 'react-text-mask';
@@ -55,6 +65,7 @@ export default function VehicleEdit(props) {
             })
         }
     }
+
     return (
         <div>
             <Header title="Veículos - gestão" />
@@ -126,7 +137,7 @@ export default function VehicleEdit(props) {
                                             <TextField
                                                 error={(data.error.city) && true}
                                                 disabled
-                                                value={data.vehicle.city}
+                                                value={data.vehicle.city || ''}
                                             />
 
                                             {(data.error.city) && 
@@ -144,7 +155,7 @@ export default function VehicleEdit(props) {
                                             <TextField
                                                 error={(data.error.uf) && true}
                                                 disabled
-                                                value={data.vehicle.uf}
+                                                value={data.vehicle.uf || ''}
                                             />
 
                                             {(data.error.uf) && 
@@ -168,20 +179,179 @@ export default function VehicleEdit(props) {
 
                                         <Select
                                             error={data.error.vehicle_type && true}
-                                            value={data.vehicle.vehicle_type}
+                                            value={data.vehicle.vehicle_type || ''}
                                             onChange={(event) => {
-
+                                                dispatch(change({
+                                                    vehicle_type: event.target.value,
+                                                    vehicle_brand: null,
+                                                    vehicle_model: null,
+                                                    vehicle_version: null,
+                                                    vehicle_gearbox: null,
+                                                    vehicle_fuel: null,
+                                                    vehicle_steering: null,
+                                                    vehicle_motorpower: null,
+                                                    vehicle_doors: null
+                                                }));
+                                                dispatch(brand(event.target.value));
+                                                if (data.error.vehicle_type) {
+                                                    delete data.error.vehicle_type
+                                                }
                                             }}
                                         >
-                                            {(data.vehicle_types.map(item => {
+                                            {(data.vehicle_types.map(item => (                                                
                                                 <MenuItem
                                                     key={item.id}
                                                     value={item.value}
                                                 >
                                                     {item.label}
-                                                </MenuItem>
-                                            }))}
+                                                </MenuItem>                                                
+                                            )))}
                                         </Select>
+
+                                        {(data.error.vehicle_type) && 
+                                            <strong className="text-danger">
+                                                {data.error.vehicle_type[0]}
+                                            </strong>
+                                        }
+                                    </div>
+
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            MARCAS
+                                        </label> 
+
+                                        <Select
+                                            error={data.error.vehicle_brand && true}
+                                            value={data.vehicle.vehicle_brand || ''}
+                                            onChange={(event) => {                                                                                                
+                                                dispatch(change({                                                    
+                                                    vehicle_brand: event.target.value,                                                    
+                                                    vehicle_model: null,
+                                                    vehicle_version: null
+                                                }));                                                
+                                                dispatch(model(data.vehicle.vehicle_type, event.target.value));
+                                                if (data.error.vehicle_brand) {
+                                                    delete data.error.vehicle_brand
+                                                }
+                                            }}
+                                        >
+                                            {(data.vehicle_brand.map(item => (                                                
+                                                <MenuItem
+                                                    key={item.id}
+                                                    value={item.value}
+                                                >
+                                                    {item.label}
+                                                </MenuItem>                                                
+                                            )))}
+                                        </Select>
+
+                                        {(data.error.vehicle_brand) && 
+                                            <strong className="text-danger">
+                                                {data.error.vehicle_brand[0]}
+                                            </strong>
+                                        }
+                                    </div>
+
+                                    <div className="row">
+                                        <div className="col-md-6 form-group">
+                                            <label className="label-custom">
+                                                MODELO
+                                            </label>
+
+                                            <Select
+                                                error={data.error.vehicle_model && true}
+                                                value={data.vehicle.vehicle_model || ''}
+                                                onChange={(event) => {
+                                                    dispatch(change({
+                                                        vehicle_model: event.target.value,                                                        
+                                                        vehicle_version: null
+                                                    }));
+                                                    dispatch(version(data.vehicle.vehicle_brand, event.target.value));
+                                                    if (data.error.vehicle_model) {
+                                                        delete data.error.vehicle_model
+                                                    }
+                                                }}
+                                            >
+                                                {(data.vehicle_model.map(item => (                                                
+                                                    <MenuItem
+                                                        key={item.id}
+                                                        value={item.value}
+                                                    >
+                                                        {item.label}
+                                                    </MenuItem>                                                
+                                                )))}
+                                            </Select>
+
+                                            {(data.error.vehicle_model) && 
+                                                <strong className="text-danger">
+                                                    {data.error.vehicle_model[0]}
+                                                </strong>
+                                            }
+                                        </div>
+
+                                        <div className="col-md-6 form-group">
+                                            <label className="label-custom">
+                                                ANO DO MODELO
+                                            </label>
+
+                                            <Select
+                                                error={data.error.vehicle_regdate && true}
+                                                value={data.vehicle.vehicle_regdate || ''}
+                                                onChange={(event) => {
+                                                    dispatch(change({ vehicle_regdate: event.target.value }));                                                    
+                                                    if (data.error.vehicle_regdate) {
+                                                        delete data.error.vehicle_regdate
+                                                    }
+                                                }}
+                                            >
+                                                {(data.regdate.map(item => (                                                
+                                                    <MenuItem
+                                                        key={item.id}
+                                                        value={item.value}
+                                                    >
+                                                        {item.label}
+                                                    </MenuItem>                                                
+                                                )))}
+                                            </Select>
+
+                                            {(data.error.vehicle_regdate) && 
+                                                <strong className="text-danger">
+                                                    {data.error.vehicle_regdate[0]}
+                                                </strong>
+                                            }
+                                        </div>
+
+                                        <div className="col-md-6 form-group">
+                                            <label className="label-custom">
+                                                VERSÃO
+                                            </label>
+
+                                            <Select
+                                                error={data.error.vehicle_version && true}
+                                                value={data.vehicle.vehicle_version || ''}
+                                                onChange={(event) => {
+                                                    dispatch(change({ vehicle_version: event.target.value }));                                                    
+                                                    if (data.error.vehicle_version) {
+                                                        delete data.error.vehicle_version
+                                                    }
+                                                }}
+                                            >
+                                                {(data.vehicle_version.map(item => (                                                
+                                                    <MenuItem
+                                                        key={item.id}
+                                                        value={item.value}
+                                                    >
+                                                        {item.label}
+                                                    </MenuItem>                                                
+                                                )))}
+                                            </Select>
+
+                                            {(data.error.vehicle_version) && 
+                                                <strong className="text-danger">
+                                                    {data.error.vehicle_version[0]}
+                                                </strong>
+                                            }
+                                        </div>
                                     </div>
                                 </div>
                             </div>
