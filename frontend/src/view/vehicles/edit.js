@@ -7,6 +7,9 @@ import {
     brand, 
     model, 
     version,
+    uploadPhoto,
+    deletePhoto,
+    reorderPhoto,
     cep 
 } from '../../store/actions/vehicles.action';
 
@@ -21,10 +24,25 @@ import {
 } from '@material-ui/core';
 
 import Header from '../header';
+import { Confirm } from '../components';
+
 import MaskedInput from 'react-text-mask';
 import NumberFormat from 'react-number-format';
+import { rootUrl } from '../../config/App';
+import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+import ArrayMove from 'array-move';
+import { FaTrash } from 'react-icons/fa';
 
 import { useDispatch, useSelector } from 'react-redux';
+import './vehicle.css';
+
+const SortableItem = SortableElement(({value}) => 
+    <div className="bg-img" style={{ backgroundImage: 'url(' + rootUrl + 'thumb/vehicles/' + value.img + '?user=' + value.user_id + '&subdir=' + value.vehicle_id + '&height=250&width=250)' }}></div>
+);
+
+const SortableList = SortableContainer(({children}) => {
+    return <div className="row">{children}</div>
+});
 
 const TextMaskCustom = (props) => {
     const { inputRef, ...other } = props;
@@ -77,23 +95,63 @@ export default function VehicleEdit(props) {
     });
 
     React.useEffect(() => {
-        index();
-    }, []);
-
-    const index = () => {
-        if (state.vehicle_id) {
-            dispatch(show(state.vehicle_id)).then(response => {
-                if (response) {
-                    setState({isLoading: false});
-                }
-            })
-        } else {
-            dispatch(store()).then(response => { 
-                if (response) {
-                    setState({isLoading: false});
-                }
-            })
+        const index = () => {
+            if (state.vehicle_id) {
+                dispatch(show(state.vehicle_id)).then(response => {
+                    if (response) {
+                        setState({isLoading: false});
+                    }
+                })
+            } else {
+                dispatch(store()).then(response => { 
+                    if (response) {
+                        setState({isLoading: false});
+                    }
+                })
+            }
         }
+
+        index();
+    }, [dispatch, state.vehicle_id]);    
+
+    const handleUpload = (event) => {
+        [...event.target.files].map(img => {
+            const body = new FormData();
+
+            body.append('file', img);
+            body.append('id', data.vehicle.id);
+
+            return dispatch(uploadPhoto(body));
+        });
+
+        if (data.error.photos && delete data.error.photos);            
+    }
+
+    const _deletePhoto = (id) => {
+        setState({ 
+            ...state,
+            isDeleted: id 
+        });
+
+        dispatch(deletePhoto(id)).then(response => response && 
+            setState({ 
+                ...state,
+                isDeleted: null 
+            }));
+    }
+
+    const handleConfirm = event => {
+        setState({ 
+            ...state,
+            confirmEl: event.currentTarget 
+        });
+    }
+
+    const onSortEnd = ({oldIndex, newIndex}) => {
+        let items = ArrayMove(data.vehicle.vehicle_photos, oldIndex, newIndex);
+        let order = items.map(({id}) => id);
+
+        dispatch(reorderPhoto({ order: order }, items));
     }
 
     return (
@@ -666,7 +724,7 @@ export default function VehicleEdit(props) {
                                         </label>
 
                                         <TextField
-                                            value={data.vehicle.title}
+                                            value={data.vehicle.title || ''}
                                             onChange={input => dispatch(change({ title: input.target.value }))}
                                         />
                                     </div>
@@ -684,6 +742,70 @@ export default function VehicleEdit(props) {
                                             onChange={input => dispatch(change({ description: input.target.value }))}
                                         />
                                     </div>
+                                </div>
+
+                                <h3 className="font-weight-normal mt-4 mb-4">
+                                    Fotos
+                                </h3>
+
+                                <div className="card card-body mb-5">
+                                   {(data.error.vehicle_photos) &&
+                                        <strong className="text-danger">
+                                            {data.error.vehicle_photos[0]}
+                                        </strong>
+                                   } 
+
+                                    <SortableList axis="xy" onSortEnd={onSortEnd}>
+                                        {data.vehicle.vehicle_photos.map((item, index) => (
+                                           <div id={item.id} key={item.id} className="col-6 col-md-4">
+                                                <div className={"box-image " + (state.isDeleted === item.id ? "box-upload" : "") + " d-flex justify-content-center align-items-center mt-3"}>
+                                                    {(state.isDeleted === item.id) 
+                                                        ? <CircularProgress color="secondary" />
+                                                        : 
+                                                            <>
+                                                                <span id={item.id} onClick={handleConfirm} className="img-action d-flex justify-content-center align-items-center">
+                                                                    <div className="app-icon d-flex">
+                                                                        <FaTrash color="#fff" size="1.2em" />
+                                                                    </div>
+                                                                </span>
+
+                                                                <SortableItem
+                                                                    key={'item-' + item.id}
+                                                                    index={index}
+                                                                    value={item}
+                                                                />
+
+                                                                {(Boolean(state.confirmEl)) &&
+                                                                    <Confirm
+                                                                        open={(item.id === parseInt(state.confirmEl.id))}
+                                                                        onConfirm={() => _deletePhoto(item.id)}
+                                                                        onClose={() => setState({ 
+                                                                            ...state,
+                                                                            confirmEl: null 
+                                                                        })}
+                                                                    />
+                                                                }                                                                
+                                                            </>
+                                                    }
+                                                </div>
+                                           </div>
+                                        ))}
+
+                                        <div className="col-6 col-md-4">
+                                            <div className="box-image box-upload d-flex justify-content-center align-items-center mt-3">
+                                                <input onChange={handleUpload} type="file" multiple name="file" className="file-input" />
+
+                                                {(data.upload_photo) 
+                                                    ? <CircularProgress /> 
+                                                    : <p className="box-text">
+                                                        <span className="text-plus">+</span>
+                                                        <span>Adicionar fotos</span>
+                                                    </p>
+
+                                                }
+                                            </div>
+                                        </div>
+                                    </SortableList>
                                 </div>
                             </div>
 
