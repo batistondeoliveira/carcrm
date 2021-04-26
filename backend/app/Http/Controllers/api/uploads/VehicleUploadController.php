@@ -22,7 +22,7 @@ class VehicleUploadController extends Controller
     {
         $file = $request->file('file');
         $fileName = md5(uniqid(time())) . strrchr($file->getClientOriginalName(), '.');
-        $vehicle = Vehicle::where('user_id', $this->user)
+        $vehicle = Vehicle::where('user_id', $this->user->id)
                     ->find($request->id);
 
         if(!$vehicle) {
@@ -31,7 +31,7 @@ class VehicleUploadController extends Controller
 
         if ($request->hasFile('file') && $file->isValid()) {
             $photo = Vehicle_photos::create([
-                'user_id' => $this->user,
+                'user_id' => $this->user->id,
                 'vehicle_id' => $request->id,
                 'img' => $fileName
             ]);
@@ -45,7 +45,7 @@ class VehicleUploadController extends Controller
                 });
 
                 Storage::put(
-                    'vehicles/' . $this->user . '/' . $photo->vehicle_id . '/' . $fileName, 
+                    'vehicles/' . $this->user->id . '/' . $photo->vehicle_id . '/' . $fileName, 
                     $img->encode(), 
                     'public'
                 );
@@ -60,7 +60,7 @@ class VehicleUploadController extends Controller
     public function update(Request $request)
     {
         foreach ($request->order as $order => $id) {
-            $position = Vehicle_photos::where('user_id', $this->user)->find($id);
+            $position = Vehicle_photos::where('user_id', $this->user->id)->find($id);
 
             $position->order = $order;
 
@@ -72,10 +72,10 @@ class VehicleUploadController extends Controller
 
     public function destroy($id)
     {
-        $photo = Vehicle_photos::where('user_id', $this->user)->find($id);
+        $photo = Vehicle_photos::where('user_id', $this->user->id)->find($id);
         
         if ($photo->id) {
-            $path = 'vehicles/' . $this->user . '/' . $photo->vehicle_id . '/' . $photo->img;
+            $path = 'vehicles/' . $this->user->id . '/' . $photo->vehicle_id . '/' . $photo->img;
 
             if (Storage::exists($path)) {
                 Storage::delete($path);
