@@ -87,41 +87,28 @@ export default function VehicleEdit(props) {
     const dispatch = useDispatch();
     const data = useSelector(state => state.vehiclesReducer);
 
-    const [state, setState] = React.useState({
-        isLoading: true,
+    const [state, setState] = React.useState({        
         isLoadingCep: false,
         isDeleted: null,
         redirect: false,
         tips: 0,
-        confirmEl: null,
-        vehicle_id: (props.match.params.id) ? props.match.params.id : null
+        confirmEl: null        
     });
+
+    const vehicle_id = (props.match.params.id) ? props.match.params.id : null;
+    const [isLoading, setLoading] = React.useState(true);
 
     React.useEffect(() => {
         const index = () => {
-            if (state.vehicle_id) {
-                dispatch(show(state.vehicle_id)).then(response => {
-                    if (response) {
-                        setState({
-                            ...state,
-                            isLoading: false
-                        });
-                    }
-                })
+            if (vehicle_id) {
+                dispatch(show(vehicle_id)).then(response => response && setLoading(false));
             } else {
-                dispatch(store()).then(response => { 
-                    if (response) {
-                        setState({
-                            ...state,
-                            isLoading: false
-                        });
-                    }
-                })
+                dispatch(store()).then(response => response && setLoading(false));
             }
         }
 
         index();
-    }, [dispatch, state]);    
+    }, [dispatch, vehicle_id]);    
 
     const handleUpload = (event) => {
         [...event.target.files].map(img => {
@@ -170,7 +157,7 @@ export default function VehicleEdit(props) {
             <Header title="Veículos - gestão" button={<Button color="inherit" className="ml-auto">Salvar</Button>} />
 
             <div className="container mt-4 pt-3">
-                {(state.isLoading) 
+                {(isLoading) 
                     ? 
                         <div className="d-flex justify-content-center mt-5 pt-5">
                             <CircularProgress />
