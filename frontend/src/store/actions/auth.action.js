@@ -35,47 +35,36 @@ export const login = credentials => dispatch => {
     }));
 
     return Http.post('oauth/token', {
-        'grant_type': 'password',
-        'client_id': 2,
-        'client_secret': 'INDQZKi5ilTW7c9rEbvC5jNOSOWykJBQ31at1QUO',
-        'username': credentials.email,
-        'password': credentials.password,
-        'scope': ''
+        grant_type: 'password',
+        client_id: 2,
+        client_secret: 'INDQZKi5ilTW7c9rEbvC5jNOSOWykJBQ31at1QUO',
+        username: credentials.email,
+        password: credentials.password
     }).then(response => {
-        dispatch(changeLoading({
-            open: false
-        }));
+        dispatch(changeLoading({ open: false }));
 
-        if(typeof response === 'undefined') {
-            return ;
+        if (typeof response !== 'undefined') {            
+            if (response.data.access_token) {
+                dispatch(setUserToken(response.data.access_token));
+            }        
         }
-
-        if(response.data.access_token) {
-            dispatch(setUserToken(response.data.access_token));
-        }        
     }).catch(error => {
-        dispatch(changeLoading({
-            open: false
-        }));
+        dispatch(changeLoading({ open: false }));
 
-        if(typeof error.response === 'undefined') {
-            return ;
-        }
-
-        if(error.response.status === 400 || error.response.status === 401) {
+        if (typeof error.response !== 'undefined') {           
+            if(error.response.status === 400 || error.response.status === 401) {
+                dispatch(changeNotify({
+                    open: true,
+                    class: 'error',
+                    msg: 'E-mail ou Senha incorretos'
+                }));                
+            }
+        } else {
             dispatch(changeNotify({
                 open: true,
                 class: 'error',
-                msg: 'E-mail ou Senha incorretos'
+                msg: 'Erro ao se conectar ao servidor'
             }));
-
-            return ;
         }
-
-        dispatch(changeNotify({
-            open: true,
-            class: 'error',
-            msg: 'Erro ao se conectar ao servidor'
-        }));
     });
 }
