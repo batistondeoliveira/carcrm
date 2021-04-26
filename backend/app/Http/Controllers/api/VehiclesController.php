@@ -58,7 +58,7 @@ class VehiclesController extends Controller
     {        
         $vehicle = Vehicle::with('vehicle_photos')
             ->firstOrCreate([
-                'user_id' => $this->user,
+                'user_id' => $this->user->id,
                 'status' => 0    
             ]);
 
@@ -81,7 +81,7 @@ class VehiclesController extends Controller
             return response()->json(['error' => $validator->errors()], 200);
         }
 
-        $vehicle = Vehicle::where('user_id', $this->user)
+        $vehicle = Vehicle::where('user_id', $this->user->id)
                     ->find($id);
 
         if ($vehicle->id) {
