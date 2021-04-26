@@ -43,14 +43,14 @@ class AuthController extends Controller
 
         $user->save();
 
-        if(!$user->id) {
+        if($user->id) {            
             return response()->json([
-                'error' => 'Erro ao cadastrar usuário'
-            ], 400);
+                'access_token' => $user->createToken('auth-api')->accessToken
+            ], 200);        
         }
 
         return response()->json([
-            'access_token' => $user->createToken('auth-api')->accessToken
-        ], 200);        
+            'error' => 'Erro ao cadastrar usuário'
+        ], 400);
     }
 }
