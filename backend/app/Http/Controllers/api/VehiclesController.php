@@ -60,7 +60,9 @@ class VehiclesController extends Controller
             ->firstOrCreate([
                 'user_id' => $this->user,
                 'status' => 0    
-            ]);        
+            ]);
+
+        $vehicle = $vehicle->fresh('vehicle_photos'); //recarrega os dados do banco
 
         return array_merge(['vehicle' => $vehicle], $this->getData());
     }
