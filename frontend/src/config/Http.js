@@ -11,7 +11,7 @@ export const HttpAuth = Axios.create({
 
 HttpAuth.interceptors.request.use(
     async (config) => {
-        config.headers.authorization = 'Bearer ' + await localStorage.getItem('access_tokem');
+        config.headers.authorization = 'Bearer ' + await localStorage.getItem('access_token');
 
         return config;
     }
