@@ -3,6 +3,7 @@ import React from 'react';
 import { 
     store, 
     show, 
+    update,
     change, 
     brand, 
     model, 
@@ -24,7 +25,7 @@ import {
     Button 
 } from '@material-ui/core';
 
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import Header from '../header';
 import { Confirm } from '../components';
 
@@ -120,7 +121,7 @@ export default function VehicleEdit(props) {
         }
 
         index();
-    }, [dispatch, state.vehicle_id]);    
+    }, [dispatch, state]);    
 
     const handleUpload = (event) => {
         [...event.target.files].map(img => {
@@ -132,7 +133,7 @@ export default function VehicleEdit(props) {
             return dispatch(uploadPhoto(body));
         });
 
-        if (data.error.photos && delete data.error.photos);            
+        if (data.error.vehicle_photos && delete data.error.vehicle_photos);            
     }
 
     const _deletePhoto = (id) => {
@@ -164,6 +165,8 @@ export default function VehicleEdit(props) {
 
     return (
         <div>
+            { (data.success) && <Redirect to="/vehicles" /> }
+
             <Header title="Veículos - gestão" button={<Button color="inherit" className="ml-auto">Salvar</Button>} />
 
             <div className="container mt-4 pt-3">
@@ -882,7 +885,7 @@ export default function VehicleEdit(props) {
                                         </Button>
                                     </Link>
 
-                                    <Button variant="contained" color="primary" size="large">
+                                    <Button onClick={ () => dispatch(update(data.vehicle)) } variant="contained" color="primary" size="large">
                                         <FaSave size="1.5rem" className="mr-3" />
                                         Salvar
                                     </Button>
