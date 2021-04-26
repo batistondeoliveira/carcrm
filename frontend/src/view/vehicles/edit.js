@@ -478,7 +478,7 @@ export default function VehicleEdit(props) {
                                                         value={data.vehicle.vehicle_gearbox || ''}
                                                         onChange={event => dispatch(change({ vehicle_gearbox: event.target.value }))}
                                                     >
-                                                        {data.gear_box.map(item => (
+                                                        {data.gearbox.map(item => (
                                                             <MenuItem 
                                                                 key={item.id} 
                                                                 value={item.value}
@@ -538,7 +538,7 @@ export default function VehicleEdit(props) {
                                                         value={data.vehicle.vehicle_motorpower || ''}
                                                         onChange={event => dispatch(change({ vehicle_motorpower: event.target.value }))}
                                                     >
-                                                        {data.motor_power.map(item => (
+                                                        {data.motorpower.map(item => (
                                                             <MenuItem 
                                                                 key={item.id} 
                                                                 value={item.value}

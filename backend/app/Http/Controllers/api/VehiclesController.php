@@ -36,10 +36,10 @@ class VehiclesController extends Controller
         return [
             'vehicle_types' => Vehicle_type::all(),
             'regdate' => Vehicle_regdate::orderBy('label', 'ASC')->get(),
-            'gear_box' => Vehicle_gearbox::all(),
+            'gearbox' => Vehicle_gearbox::all(),
             'fuel' => Vehicle_fuel::all(),
             'car_steering' => Vehicle_car_steering::all(),
-            'motor_power' => Vehicle_motorpower::all(),
+            'motorpower' => Vehicle_motorpower::all(),
             'doors' => Vehicle_doors::all(),
             'features' => Vehicle_features::all(),
             'carcolor' => Vehicle_carcolor::all(),
