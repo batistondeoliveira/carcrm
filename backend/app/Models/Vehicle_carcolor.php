@@ -8,4 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Vehicle_carcolor extends Model
 {
     use HasFactory;
+    protected $guarded = ['id'];
 }
