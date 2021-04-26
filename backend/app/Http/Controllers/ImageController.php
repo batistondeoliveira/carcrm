@@ -15,7 +15,7 @@ class ImageController extends Controller
         $subPath = ($request->subdir) ? $request->subdir . '/' : '';
         $width = ((int) $request->width) ? (int) $request->width : null;
         $height = ((int) $request->height) ? (int) $request->height : null;
-        $path = $path . '/' . $subPath . $user . $img;
+        $path = $path . '/' . $user . $subPath . $img;
 
         $url = Storage::get($path);        
 
