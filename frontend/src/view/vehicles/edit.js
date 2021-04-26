@@ -20,9 +20,11 @@ import {
     MenuItem, 
     InputAdornment, 
     FormControlLabel, 
-    Checkbox 
+    Checkbox,
+    Button 
 } from '@material-ui/core';
 
+import { Link } from 'react-router-dom';
 import Header from '../header';
 import { Confirm } from '../components';
 
@@ -31,7 +33,7 @@ import NumberFormat from 'react-number-format';
 import { rootUrl } from '../../config/App';
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import ArrayMove from 'array-move';
-import { FaTrash } from 'react-icons/fa';
+import { FaTrash, FaSave } from 'react-icons/fa';
 
 import { useDispatch, useSelector } from 'react-redux';
 import './vehicle.css';
@@ -99,13 +101,19 @@ export default function VehicleEdit(props) {
             if (state.vehicle_id) {
                 dispatch(show(state.vehicle_id)).then(response => {
                     if (response) {
-                        setState({isLoading: false});
+                        setState({
+                            ...state,
+                            isLoading: false
+                        });
                     }
                 })
             } else {
                 dispatch(store()).then(response => { 
                     if (response) {
-                        setState({isLoading: false});
+                        setState({
+                            ...state,
+                            isLoading: false
+                        });
                     }
                 })
             }
@@ -156,7 +164,7 @@ export default function VehicleEdit(props) {
 
     return (
         <div>
-            <Header title="Veículos - gestão" />
+            <Header title="Veículos - gestão" button={<Button color="inherit" className="ml-auto">Salvar</Button>} />
 
             <div className="container mt-4 pt-3">
                 {(state.isLoading) 
@@ -171,7 +179,7 @@ export default function VehicleEdit(props) {
                                     Localização do Veículo
                                 </h3>
 
-                                <div className="card card-body">
+                                <div className="card card-body" onClick={() => setState({ ...state, tips: 0 })}>
                                     <div className="row">
                                         <div className="col-md-7">
                                             <label className="label-custom">
@@ -188,8 +196,18 @@ export default function VehicleEdit(props) {
                                                     onChange: input => {
                                                         dispatch(change({zipCode: input.target.value}));
                                                         if (input.target.value.length > 8) {
-                                                            setState({isLoadingCep: true})
-                                                            dispatch(cep(input.target.value)).then(response => response && setState({isLoadingCep: false}))
+                                                            setState({
+                                                                ...state,
+                                                                isLoadingCep: true
+                                                            });
+
+                                                            dispatch(cep(input.target.value)).then(response => response && 
+                                                                setState({
+                                                                    ...state,
+                                                                    isLoadingCep: false
+                                                                })
+                                                            )
+
                                                             if (data.error.zipCode) {
                                                                 delete data.error.zipCode;
                                                                 delete data.error.uf;
@@ -259,7 +277,7 @@ export default function VehicleEdit(props) {
                                     Dados do Veículo
                                 </h3>
 
-                                <div className="card card-body">                                    
+                                <div className="card card-body" onClick={() => setState({ ...state, tips: 1 })}>                                    
                                     <div className="form-group">
                                         <label className="label-custom">
                                             CATEGORIA
@@ -443,7 +461,7 @@ export default function VehicleEdit(props) {
                                     </div>
                                 </div>
 
-                                <div className="card card-body mt-4">
+                                <div className="card card-body mt-4" onClick={() => setState({ ...state, tips: 1 })}>
                                     <div className="row">
                                         {/* INICIO MOSTRA SE FOR CARRO */}
                                         {(data.vehicle.vehicle_type) === 2020 &&
@@ -618,7 +636,7 @@ export default function VehicleEdit(props) {
                                             Itens e Opcionais
                                         </h3>
 
-                                        <div className="card card-body mt-4 mb-4">
+                                        <div className="card card-body mt-4 mb-4" onClick={() => setState({ ...state, tips: 1 })}>
                                             <div className="row">
                                                 {data.features.map(item => (item.vehicle_type_id === data.vehicle.vehicle_type) && (
                                                     <div key={item.id} className="col-md-6">
@@ -651,7 +669,7 @@ export default function VehicleEdit(props) {
                                     Financeiro
                                 </h3>
 
-                                <div className="card card-body mt-4 mb-4">
+                                <div className="card card-body mt-4 mb-4" onClick={() => setState({ ...state, tips: 1 })}>
                                     <div className="form-group">
                                         <label className="label-custom">
                                             ESTADO FINANCEIRO
@@ -726,6 +744,7 @@ export default function VehicleEdit(props) {
                                         <TextField
                                             value={data.vehicle.title || ''}
                                             onChange={input => dispatch(change({ title: input.target.value }))}
+                                            onFocus={() => setState({ ...state, tips: 2 })}
                                         />
                                     </div>
 
@@ -740,6 +759,7 @@ export default function VehicleEdit(props) {
                                             rowsMax="5"
                                             value={data.vehicle.description || ''}
                                             onChange={input => dispatch(change({ description: input.target.value }))}
+                                            onFocus={() => setState({ ...state, tips: 3 })}
                                         />
                                     </div>
                                 </div>
@@ -748,7 +768,7 @@ export default function VehicleEdit(props) {
                                     Fotos
                                 </h3>
 
-                                <div className="card card-body mb-5">
+                                <div className="card card-body mb-5" onClick={() => setState({ ...state, tips: 4 })}>
                                    {(data.error.vehicle_photos) &&
                                         <strong className="text-danger">
                                             {data.error.vehicle_photos[0]}
@@ -793,7 +813,7 @@ export default function VehicleEdit(props) {
 
                                         <div className="col-6 col-md-4">
                                             <div className="box-image box-upload d-flex justify-content-center align-items-center mt-3">
-                                                <input onChange={handleUpload} type="file" multiple name="file" className="file-input" />
+                                                <input onClick={() => setState({ ...state, tips: 4 })} onChange={handleUpload} type="file" multiple name="file" className="file-input" />
 
                                                 {(data.upload_photo) 
                                                     ? <CircularProgress /> 
@@ -809,9 +829,65 @@ export default function VehicleEdit(props) {
                                 </div>
                             </div>
 
-                            <div className="col-md-5">
-                                
-                            </div>
+                            <div className="col-md-5 d-none d-md-block">
+                                <div className="tips">
+                                    <h3 className="font-weight-normal mb-4">
+                                        Dicas
+                                    </h3>
+
+                                    <div className="card card-body">
+                                        {(state.tips === 0) && 
+                                            <>
+                                                <h5>Endereço</h5>
+                                                <p>O endereço é a primeira informação que os consumidores procuram quando estão pesquisando Veiculos. <br/><br/>Anúncios com <strong>endereço</strong> terão mais oportunidades de serem exibidos nas novas formas de buscas, e receber mais contatos.</p>
+                                            </>
+                                        }
+
+                                        {(state.tips === 1) && 
+                                            <>
+                                                <h5>Dados verídicos</h5>
+                                                <p>Informe os dados corretos <br/>(quilometragem, ano modelo, versão, etc.) <br/>para conseguir o comprador rapidamente.</p>
+                                            </>
+                                        }
+
+                                        {(state.tips === 2) && 
+                                            <>
+                                                <h5>Título</h5>
+                                                <p>Sugerimos complementar o título com caracteristicas do seu carro.<br/>Ex: Fiat Palio 2004 em perfeito estado.</p>
+                                            </>
+                                        }
+
+                                        {(state.tips === 3) && 
+                                            <>
+                                                <h5>Descrição</h5>
+                                                <p>Inclua caracteristicas do carro, como ar condicionado, vidros e travas elétricas, alarme, som, DVD, air bag duplo, IPVA pago, duvidas pendentes etc.</p>
+                                            </>
+                                        }
+
+                                        {(state.tips === 4) && 
+                                            <>
+                                                <p>
+                                                    <strong>Fotos reais:</strong> Envie fotos reais do seu carro, assim aumenta suas chances de convencer o pontencial comprador.<br/><br/>
+                                                    <strong>Todos os ângulos:</strong> Além das fotos do exterior do carro, não se esqueça de mostrar o interior.
+                                                </p>
+                                            </>
+                                        }
+                                    </div>
+                                </div>
+                            
+                                <div className="d-flex btn-save">
+                                    <Link to="/vehicles" className="mr-2">
+                                        <Button variant="contained" size="large">
+                                            Voltar
+                                        </Button>
+                                    </Link>
+
+                                    <Button variant="contained" color="primary" size="large">
+                                        <FaSave size="1.5rem" className="mr-3" />
+                                        Salvar
+                                    </Button>
+                                </div> 
+                            </div>                                                                           
                         </div>
                 }
             </div>

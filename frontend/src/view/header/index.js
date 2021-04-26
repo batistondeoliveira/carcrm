@@ -52,7 +52,9 @@ export default function Header(props) {
 
                             <Typography variant="h6">
                                 {props.title}
-                            </Typography>                        
+                            </Typography>  
+
+                            {props.button}                      
                         </Toolbar>
                     </AppBar>
                 :

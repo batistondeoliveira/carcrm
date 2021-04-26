@@ -2,6 +2,12 @@
     outline: none !important;
 }
 
+@media (max-width: 576px) {
+    body {
+        margin-top: 56px !important;
+    }
+}
+
 body {
     background-color: #eee !important;
 }
