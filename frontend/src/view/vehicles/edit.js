@@ -4,6 +4,7 @@ import {
     store, 
     show, 
     update,
+    indexResponse,
     change, 
     brand, 
     model, 
@@ -109,6 +110,14 @@ export default function VehicleEdit(props) {
 
         index();
     }, [dispatch, vehicle_id]);    
+
+    React.useEffect(() => {
+        return () => {
+            dispatch(indexResponse({ success: false }));
+        }
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleUpload = (event) => {
         [...event.target.files].map(img => {
