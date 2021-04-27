@@ -9,7 +9,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import Routes from './Routes';
 
 import { Loading, Notify, Alert } from './view/components';
-
+import Navigation from './view/navigation';
 
 const theme = createMuiTheme({
     palette: {
@@ -37,7 +37,8 @@ const App = () => (
         <ThemeProvider theme={theme}>    
             <Loading />    
             <Notify />   
-            <Alert />            
+            <Alert /> 
+            <Navigation />           
             
             <Routes />
         </ThemeProvider>

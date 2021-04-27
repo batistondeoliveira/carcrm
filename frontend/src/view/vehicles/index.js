@@ -1,5 +1,6 @@
 import React from 'react';
 import { index, destroy } from '../../store/actions/vehicles.action';
+import { changeScreenA  } from '../../store/actions/navigation.action';
 import { Link } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Menu, MenuItem, Slide, Fade } from '@material-ui/core';
 import { FaPlus, FaEllipsisV, FaClipboard, FaUser, FaLink, FaPencilAlt, FaTrash, FaShare } from 'react-icons/fa';
@@ -161,7 +162,7 @@ export default function Vehicles() {
                                                             open={(index === parseInt(state.menuEl.id))}
                                                             onClose={() => setState({ menuEl: null })}                                                            
                                                         >
-                                                            <MenuItem>
+                                                            <MenuItem onClick={() => dispatch(changeScreenA({ open: true }))}>
                                                                 <FaClipboard size="1.2em" className="mr-4" /> 
                                                                 Notas
                                                             </MenuItem>
