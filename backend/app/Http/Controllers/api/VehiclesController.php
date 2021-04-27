@@ -20,6 +20,7 @@ use App\Models\Vehicle_regdate;
 use App\Models\Vehicle_type;
 use App\Models\Vehicle_version;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class VehiclesController extends Controller
@@ -132,7 +133,25 @@ class VehiclesController extends Controller
 
     public function destroy($id)
     {
-        //
+        $vehicle = Vehicle::where('user_id', $this->user->id)
+            ->with('vehicle_photos')
+            ->find($id);
+
+        if ($vehicle->id) {
+            $dir = 'vehicles/' . $this->user->id . '/' . $id;
+
+            if ($vehicle->vehicle_photos()->delete()) {
+                Storage::deleteDirectory($dir);
+            }
+
+            if ($vehicle->delete()) {
+                return $this->success('Veículo excluído com sucesso');
+            }
+
+            return $this->error('Erro ao excluir veículo');
+        }
+
+        return $this->error('Veículo não encontrado');
     }
 
     public function brand($vehicle_type) 
