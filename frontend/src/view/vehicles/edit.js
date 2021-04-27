@@ -163,7 +163,7 @@ export default function VehicleEdit(props) {
         <div>
             { (data.success) && <Redirect to="/vehicles" /> }
 
-            <Header title="Veículos - gestão" button={<Button color="inherit" className="ml-auto">Salvar</Button>} />
+            <Header title="Veículos - gestão" button={<Button onClick={ () => dispatch(update(data.vehicle)) } color="inherit" className="ml-auto">Salvar</Button>} />
 
             <div className="container mt-4 pt-3">
                 {(isLoading) 
