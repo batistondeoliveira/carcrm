@@ -34,7 +34,7 @@ export const HttpUpload = Axios.create({
 
 HttpUpload.interceptors.request.use(
     async (config) => {
-        config.headers.authorization = 'Bearer ' + await localStorage.getItem('access_tokem');
+        config.headers.authorization = 'Bearer ' + await localStorage.getItem('access_token');
         config.headers['Content-Type'] = 'multipart/form-data';
         
         return config;
