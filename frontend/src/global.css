@@ -80,10 +80,20 @@ a, a:hover {
     border: none;
 }
 
+.vehicle-img {
+    min-width: 180px;
+    min-height: 135px;
+}
+
 @media (max-width: 576px) {
+    .vehicle-img {
+        min-width: 100px !important;
+        min-height: 75px !important;
+    }
+
     .vehicle-img img {
         max-width: 100px;
-    }
+    }    
 
     .MuiMenu-paper {
         position: fixed !important;
