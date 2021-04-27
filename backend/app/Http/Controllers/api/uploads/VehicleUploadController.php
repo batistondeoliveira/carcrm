@@ -11,13 +11,6 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class VehicleUploadController extends Controller
 {
-    protected $user;
-
-    public function __construct() 
-    {
-        $this->user = Auth()->guard('api')->user();        
-    }
-
     public function store(Request $request)
     {
         $file = $request->file('file');

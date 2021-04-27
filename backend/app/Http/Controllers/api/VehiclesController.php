@@ -24,14 +24,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
 class VehiclesController extends Controller
-{    
-    protected $user;
-
-    public function __construct()     
-    {
-        $this->user = Auth()->guard('api')->user();                  
-    }
-
+{        
     private function getData() 
     {
         return [

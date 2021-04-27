@@ -11,6 +11,13 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    protected $user;
+
+    public function __construct()
+    {
+        $this->user = Auth()->guard('api')->user();    
+    }
+
     public function success($msg = 'Arquivo excluído com sucesso', $time = 1200) 
     {
         return response()->json(['status' => 200, 'success' => $msg, 'time' => $time], 200);
