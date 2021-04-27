@@ -87,7 +87,19 @@ class VehiclesController extends Controller
 
     public function show($id)
     {
-        //
+        $vehicle = Vehicle::where('user_id', $this->user->id)
+            ->with('vehicle_photos')
+            ->find($id);
+
+        if ($vehicle->id) {
+            $vehicle_brand = $this->brand($vehicle->vehicle_type);
+            $vehicle_model = $this->model($vehicle->vehicle_type, $vehicle->vehicle_brand);
+            $vehicle_version = $this->version($vehicle->vehicle_brand, $vehicle->vehicle_model);
+
+            return array_merge(['vehicle' => $vehicle], $vehicle_brand, $vehicle_model, $vehicle_version, $this->getData());
+        }
+
+        return $this->error('Veículo não encontrado');
     }
 
     public function update(Request $request, $id)
