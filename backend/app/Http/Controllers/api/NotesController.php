@@ -11,9 +11,12 @@ class NotesController extends Controller
 {
    public function index(Request $request)
     {
+        $type = $request->type;
+        $uid = $request->uid;
+
         $notes = Notes::where('user_id', $this->user->id)
-            ->where('type', $request->type)
-            ->where('uid', $request->uid)
+            ->where('type', $type)
+            //->where('uid', $uid)
             ->with('user')
             ->orderBy('id', 'DESC')
             ->paginate(env('APP_PAGINATE'));
@@ -31,7 +34,7 @@ class NotesController extends Controller
 
         $note = new Notes();
 
-        $note->user_id = $this->user_id;
+        $note->user_id = $this->user->id;
         $note->fill($request->all());
 
         $note->save();

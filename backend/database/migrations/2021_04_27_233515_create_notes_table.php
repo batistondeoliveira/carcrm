@@ -16,7 +16,7 @@ class CreateNotesTable extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('use_id')->nullable();
+            $table->bigInteger('user_id')->nullable();
             $table->string('type')->nullable();
             $table->bigInteger('uid')->nullable();
             $table->bigInteger('tag_id')->nullable();
