@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { pt } from 'date-fns/locale';
 import { zonedTimeToUtc } from 'date-fns-tz';
 import { Confirm } from '../components';
+import { SCROLL } from '../../config/App';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
@@ -36,10 +37,43 @@ export default function Notes(props) {
     });    
 
     React.useEffect(() => {
+        document.getElementById('scroll').addEventListener('scroll', _handleScroll);
+
+        return () => document.getElementById('scroll').removeEventListener('scroll', _handleScroll);
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+
+    React.useEffect(() => {
         _index(isLoadMore);
 
         //eslint-disable-next-line react-hooks/exhaustive-deps
     }, [query]);
+
+    React.useEffect(() => {
+        if (isLoadMore) {
+            setQuery({
+                ...query,
+                page: query.page + 1
+            })
+        }
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoadMore]);
+
+    const _handleScroll = (event) => {
+        let scrollTop = event.srcElement.scrollHeight - (event.srcElement.offsetHeight + event.srcElement.scrollTop);
+
+        if (scrollTop < SCROLL) {
+            if (!isLoadMore && _handleLoadMore());
+        }
+    }
+
+    const _handleLoadMore = () => {
+        if (notes.current_page < notes.last_page) {
+            setLoadMore(true);
+        }
+    }
 
     const _handleMenu = (event) => {
         setState({ menuEl: event.currentTarget });
@@ -79,13 +113,16 @@ export default function Notes(props) {
 
     const _update = () => {
         setState({ isLoading: true });
-        dispatch(update(note)).then(response => {
-            if (response) {
-                dispatch(change('clear'));
-                setState({ isLoading: false, isEdited: null });
-            }
+        dispatch(update(note)).then(() => {            
+            dispatch(change('clear'));
+            setState({ isLoading: false, isEdited: null });
         })
     }    
+
+    const _destroy = (id) => {
+        setState({ isDeleted: id, menuEl: null });    
+        dispatch(destroy(id)).then(response => response && setState({ isDeleted: null }));
+    }
 
     const Transition = React.forwardRef((props, ref) => {
         return <Slide direction="up" ref={ref} {...props} />
@@ -146,8 +183,8 @@ export default function Notes(props) {
                                                 </div>
 
                                                 <small>
-                                                    {format( zonedTimeToUtc(item.updated_at, 'America/Sao_Paulo'), "'Dia' dd 'de' MMMM ', às ' HH:mm 'h'", {locale: pt} )} 
-                                                    por 
+                                                    {format( zonedTimeToUtc(item.updated_at, 'America/Sao_Paulo'), "'Dia' dd 'de' MMMM', às ' HH:mm'h' ", {locale: pt} )} 
+                                                    por &nbsp;
                                                     {item.user.name}
                                                 </small>                                                
                                             </div>
@@ -174,19 +211,35 @@ export default function Notes(props) {
                                                                         Editar
                                                                     </MenuItem>
 
-                                                                    <MenuItem>
+                                                                    <MenuItem onClick={() => setState({ confirmEl: item.id })}>
                                                                         <FaTrash size="1.2em" className="mr-4" />
                                                                         Apagar
                                                                     </MenuItem>
                                                                 </Menu>
+                                                            }
+
+                                                            {(state.confirmEl) &&
+                                                                <Confirm
+                                                                    open={(item.id === state.confirmEl)}
+                                                                    onConfirm={() => _destroy(item.id)}
+                                                                    onClose={() => setState({ confirmEl: null })}
+                                                                />
                                                             }
                                                         </>
                                                 }
                                             </div>
                                         </div>
                                     </div>
+
+                                    <hr className="m-0" />
                                 </React.Fragment>
                             ))}
+
+                            {(isLoadMore) &&
+                                <div className="text-center card-body">
+                                    <CircularProgress />
+                                </div>
+                            }
 
                             <div className="form">
                                 <TextField
@@ -220,7 +273,7 @@ export default function Notes(props) {
                                                         <IconButton onClick={() => note.content && _store() }>
                                                             <MdSend color={(note.content) && theme.palette.secondary.main} />
                                                         </IconButton>
-                                                }
+                                                }                                               
                                             </>                                        
                                     }
                                 </div>
