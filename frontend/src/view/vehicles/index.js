@@ -1,6 +1,6 @@
 import React from 'react';
 import { index, destroy } from '../../store/actions/vehicles.action';
-import { changeScreenA  } from '../../store/actions/navigation.action';
+import { changeScreenC  } from '../../store/actions/navigation.action';
 import { Link } from 'react-router-dom';
 import { Button, CircularProgress, IconButton, Menu, MenuItem, Slide, Fade } from '@material-ui/core';
 import { FaPlus, FaEllipsisV, FaClipboard, FaUser, FaLink, FaPencilAlt, FaTrash, FaShare } from 'react-icons/fa';
@@ -14,7 +14,7 @@ export default function Vehicles() {
     const dispatch = useDispatch();
     const vehicles = useSelector(state => state.vehiclesReducer.vehicles);
     const [ isLoading, setLoading ] = React.useState(true);
-    const [ isLoadingMore, setLoadingMore ] = React.useState(false);
+    const [ isLoadMore, setLoadMore ] = React.useState(false);
     const [ query, setQuery ] = React.useState({ page: 1 });
     const [ state, setState ] = React.useState({
         isDeleted: null,
@@ -34,7 +34,7 @@ export default function Vehicles() {
             (event.srcElement.body.offsetHeigth + event.srcElement.body.scrollTop);
 
         if (scrollTop < SCROLL) {
-            if(!isLoadingMore && _handleLoadMore());
+            if(!isLoadMore && _handleLoadMore());
         }
     }
 
@@ -57,7 +57,7 @@ export default function Vehicles() {
         dispatch(index(query, LoadMore)).then(response => {
             if (response) {
                 setLoading(false);
-                if (isLoadingMore && setLoadingMore(false));
+                if (isLoadMore && setLoadMore(false));
             }
         })
     }
@@ -65,6 +65,18 @@ export default function Vehicles() {
     const _destroy = (id) => {
         setState({ isDeleted: id });
         dispatch(destroy(id)).then(response => response && setState({ isDeleted: null }));
+    }
+
+    const notes = (id) => {
+        setState({ menuEl: null });
+        dispatch(changeScreenC({
+            open: true,
+            type: 'notes',
+            props: {
+                uid: id,
+                type: 'vehicles'
+            }
+        }))
     }
 
     const Transition = React.forwardRef((props, ref) => {
@@ -162,7 +174,7 @@ export default function Vehicles() {
                                                             open={(index === parseInt(state.menuEl.id))}
                                                             onClose={() => setState({ menuEl: null })}                                                            
                                                         >
-                                                            <MenuItem onClick={() => dispatch(changeScreenA({ open: true }))}>
+                                                            <MenuItem onClick={() => notes(item.id)}>
                                                                 <FaClipboard size="1.2em" className="mr-4" /> 
                                                                 Notas
                                                             </MenuItem>
