@@ -2,6 +2,7 @@ import React from 'react';
 import { changeScreenA, changeScreenB, changeScreenC } from '../../store/actions/navigation.action';
 import { useDispatch, useSelector } from 'react-redux';
 import { Drawer } from '@material-ui/core';
+import Notes from '../notes';
 
 const style = {
     width: '680px',
@@ -40,7 +41,13 @@ export default function Navigation() {
                 onClose={() => dispatch(changeScreenC({ open: false }))}
             >
                 <div style={style}>
-
+                    {(nav.screenC.type === 'notes') &&
+                        <Notes
+                            uid={nav.screenC.props.id}
+                            type={nav.screenC.props.type}
+                            props={nav.screenC.props}
+                        />
+                    }
                 </div>
             </Drawer>  
         </>
