@@ -16,7 +16,7 @@ class NotesController extends Controller
 
         $notes = Notes::where('user_id', $this->user->id)
             ->where('type', $type)
-            //->where('uid', $uid)
+            ->where('uid', $uid)
             ->with('user')
             ->orderBy('id', 'DESC')
             ->paginate(env('APP_PAGINATE'));
