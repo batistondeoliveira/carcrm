@@ -30,7 +30,7 @@ class CreateOwnersTable extends Migration
             $table->string('zipCode', 9)->nullable();
             $table->string('uf', 2)->nullable();
             $table->string('city')->nullable();
-            $table->string('nehighborhood')->nullable();
+            $table->string('neighborhood')->nullable();
             $table->string('street')->nullable();
             $table->string('streetNumber')->nullable();
             $table->timestamps();
