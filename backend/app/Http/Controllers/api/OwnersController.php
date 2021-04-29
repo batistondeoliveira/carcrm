@@ -45,7 +45,7 @@ class OwnersController extends Controller
             ->find($id);
 
         if ($owner->id) {
-            return $owner;
+            return compact('owner');
         }
 
         return $this->error('Nenhum proprietário encontrado');
