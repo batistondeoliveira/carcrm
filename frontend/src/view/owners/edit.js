@@ -47,7 +47,7 @@ export default function OwnerEdit(props) {
     const owner = useSelector(state => state.ownersReducer.owner);
     const error = useSelector(state => state.ownersReducer.error);
     const response = useSelector(state => state.ownersReducer.success);
-    const owner_id = (props.owner_id) ? props.owner_id : null;
+    const owner_id = (props.uid) ? props.uid : null;
 
     const [ isLoading, setLoading ] = React.useState(true);
     const [ isLoadingCep, setLoadingCep ] = React.useState(false);
@@ -353,6 +353,74 @@ export default function OwnerEdit(props) {
                                         )
                                     }}
                                 />                                 
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            CIDADE
+                                        </label>
+
+                                        <TextField                                                 
+                                            disabled
+                                            value={owner.city || ''}                                        
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="col-md-3">
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            UF
+                                        </label>
+
+                                        <TextField                                                 
+                                            disabled
+                                            value={owner.uf || ''}                                        
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="form-group">
+                                <label className="label-custom">
+                                    BAIRRO
+                                </label>
+
+                                <TextField                                                 
+                                    disabled
+                                    value={owner.neighborhood || ''}                                        
+                                    onChange={input => dispatch(change({ neighborhood: input.target.value }))}
+                                />
+                            </div>
+
+                            <div className="row">
+                                <div className="col-md-9">
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            RUA
+                                        </label>
+
+                                        <TextField                                                                                             
+                                            value={owner.street || ''} 
+                                            onChange={input => dispatch(change({ street: input.target.value }))}                                       
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="col-md-3">
+                                    <div className="form-group">
+                                        <label className="label-custom">
+                                            NÚMERO
+                                        </label>
+
+                                        <TextField                                                                                             
+                                            value={owner.streetNumber || ''} 
+                                            onChange={input => dispatch(change({ streetNumber: input.target.value }))}                                                                              
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </>
                 }             
