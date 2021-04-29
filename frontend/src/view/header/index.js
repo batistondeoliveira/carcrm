@@ -29,8 +29,12 @@ import {
 } from 'react-icons/fa';
 
 import { MdMenu } from 'react-icons/md';
+import { useDispatch } from 'react-redux';
+import { changeScreenA } from '../../store/actions/navigation.action';
 
 export default function Header(props) {
+    const dispatch = useDispatch();
+
     const [state, setState] = React.useState({
         open: false
     });
@@ -38,7 +42,15 @@ export default function Header(props) {
     const [collapse, setCollapse] = React.useState({
         site: false,
         financeiro: false
-    })
+    });
+
+    const handlePage = (page) => {
+        dispatch(changeScreenA({
+            open: true,
+            type: page,
+            props: {}
+        }));
+    }
 
     return (
         <>
@@ -72,7 +84,7 @@ export default function Header(props) {
                                 </li>
 
                                 <li className="nav-item">
-                                    <button className="nav-link bg-white" to="/vehicles">
+                                    <button onClick={() => handlePage('owners')} className="nav-link bg-white" to="/vehicles">
                                         <FaUsers className="icon-lg mr-2" /> Proprietários
                                     </button>
                                 </li>
