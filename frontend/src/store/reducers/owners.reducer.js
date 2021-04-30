@@ -15,8 +15,8 @@ const initialState = {
 export default (state = initialState, { type, payload, isLoadMore }) => {
     switch (type) {
         case actionTypes.INDEX:
-            if (isLoadMore) {
-                payload.owners.data = state.owneres.data.concat(payload.owneres.data);
+            if (isLoadMore) {                
+                payload.owners.data = state.owners.data.concat(payload.owners.data);
             }
 
             return { ...state, ...payload }

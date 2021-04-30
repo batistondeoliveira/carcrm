@@ -24,13 +24,14 @@ import { changeScreenA, changeScreenB, changeScreenC } from '../../store/actions
 import { useDispatch, useSelector } from 'react-redux';
 import { FaCar, FaClipboard, FaPencilAlt, FaPlus, FaTrash } from 'react-icons/fa';
 import { FcOpenedFolder } from 'react-icons/fc';
-import { MdKeyboardBackspace, MdMoreHoriz } from 'react-icons/md';
+import { MdKeyboardBackspace, MdMoreHoriz, MdPersonAdd } from 'react-icons/md';
 import { SCROLL } from '../../config/App';
 import { Confirm } from '../components';
 
-export default function Owners() {
+export default function Owners(props) {
     const dispatch = useDispatch();
     const owners = useSelector(state => state.ownersReducer.owners);
+    const vehicle_id = props.props.vehicle_id || null;
 
     const [ isLoading, setLoading ] = React.useState(true);
     const [ isLoadMore, setLoadMore ] = React.useState(false);
@@ -39,7 +40,8 @@ export default function Owners() {
     const [ state, setState ] = React.useState({        
         isDeleted: null,        
         menuEl: null,
-        confirmEl: null
+        confirmEl: null,
+        confirmOwnerEl: null
     });    
 
     React.useEffect(() => {
@@ -111,6 +113,17 @@ export default function Owners() {
         }));
     }
 
+    const _show = (item) => {
+        setState({ menuEl: null });
+        dispatch(changeScreenB({
+            open: true,
+            type: 'owner-show',
+            props: {
+                item: item
+            }
+        }))
+    }
+
     const _destroy = (id) => {
         setState({ isDeleted: id, menuEl: null });
         dispatch(destroy(id)).then(response => response && setState({ isDeleted: null }));
@@ -175,19 +188,39 @@ export default function Owners() {
                                 {owners.data.map((item, index) => (
                                     <React.Fragment key={index}>
                                         <ListItem button selected={state.isDeleted === item.id}>
-                                            <ListItemAvatar>
+                                            <ListItemAvatar onClick={() => _show(item)}>
                                                 <Avatar className="bg-primary">
                                                     {item.name.slice(0,1)}
                                                 </Avatar>
                                             </ListItemAvatar>
 
-                                            <ListItemText className="pb-3 pt-3" primary={item.name} />
+                                            <ListItemText onClick={() => _show(item)} className="pb-3 pt-3" primary={item.name} />
 
                                             {(state.isDeleted === item.id) &&
                                                 <CircularProgress color="secondary" className="mr-2" />
                                             }
 
-                                            {(!state.isDeleted) &&
+                                            {(vehicle_id) &&
+                                                <IconButton onClick={() => setState({ confirmOwnerEl: item.id })}>
+                                                    <MdPersonAdd />
+                                                </IconButton>
+                                            }
+
+                                            {(state.confirmOwnerEl) &&
+                                                <Confirm
+                                                    open={(item.id === state.confirmOwnerEl)}
+                                                    onConfirm={() => {
+                                                        props.props.onSelected(item);
+                                                        dispatch(changeScreenA({
+                                                            open: false
+                                                        }))
+                                                    }}
+                                                    onClose={() => setState({ confirmOwnerEl: null })}
+                                                    title="Deseja adicionar esse proprietário ao veículo?"
+                                                />
+                                            }
+
+                                            {(!state.isDeleted && !vehicle_id) &&
                                                 <div>
                                                     <IconButton id={index} onClick={_handleMenu}>
                                                         <MdMoreHoriz />
@@ -239,6 +272,12 @@ export default function Owners() {
                                         <Divider />
                                     </React.Fragment>
                                 ))}
+
+                                {(isLoadMore) &&
+                                    <div className="text-center card-body">
+                                        <CircularProgress />
+                                    </div>  
+                                }
                             </List>
                         </>
                 }
