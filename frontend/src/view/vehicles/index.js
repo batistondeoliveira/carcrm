@@ -22,32 +22,46 @@ export default function Vehicles() {
         menuEl: null,
         confirmEl: null,
         ownerEl: null
-    });
+    });    
 
     React.useEffect(() => {
         document.addEventListener('scroll', _handleScroll);
-        _index();
+
+        return () => document.removeEventListener('scroll', _handleScroll);
 
         //eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    });
+
+    React.useEffect(() => {
+        _index(isLoadMore);
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [query]);
+
+    React.useEffect(() => {
+        if (isLoadMore) {
+            setQuery({
+                ...query,
+                page: query.page + 1
+            })
+        }
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoadMore]);
 
     const _handleScroll = (event) => {
-        let scrollTop = event.srcElement.body.scrollHeight - 
-            (event.srcElement.body.offsetHeigth + event.srcElement.body.scrollTop);
+        const { scrollTop, scrollHeight, clientHeight } = event.srcElement.documentElement;
 
-        if (scrollTop < SCROLL) {
-            if(!isLoadMore && _handleLoadMore());
+        let scroll = scrollHeight - (clientHeight + scrollTop);
+
+        if (scroll < SCROLL) {
+            if (!isLoadMore && _handleLoadMore());
         }
     }
 
     const _handleLoadMore = () => {
         if (vehicles.current_page < vehicles.last_page) {
-            setQuery({ 
-                ...query,
-                page: query.page + 1
-            }, () => {
-                _index(true);
-            });
+            setLoadMore(true);
         }
     }
 
@@ -55,12 +69,10 @@ export default function Vehicles() {
         setState({ menuEl: event.currentTarget });
     }
 
-    const _index = (LoadMore) => {
-        dispatch(index(query, LoadMore)).then(response => {
-            if (response) {
-                setLoading(false);
-                if (isLoadMore && setLoadMore(false));
-            }
+    const _index = (loadMore) => {
+        dispatch(index(query, loadMore)).then(response => {
+            setLoading(false);
+            setLoadMore(false);
         })
     }
 
@@ -110,7 +122,7 @@ export default function Vehicles() {
                                 </Link>
                             </div>
 
-                            <div className="card">
+                            <div className="card mb-5">
                                 {(vehicles.data.length > 0) &&
                                     <div className="card-header">
                                         <h6 className="m-0">
@@ -233,10 +245,18 @@ export default function Vehicles() {
                                                     }
                                                 </div>
                                             </div>
+
+                                            <hr />
                                         </React.Fragment>
                                     ))}
                                 </div>
                             </div>
+
+                            {(isLoadMore) &&
+                                <div className="text-center card-body">
+                                    <CircularProgress />
+                                </div>
+                            }
                         </>
                 } 
             </div>  
