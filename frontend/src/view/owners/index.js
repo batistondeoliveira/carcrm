@@ -141,6 +141,17 @@ export default function Owners(props) {
         }));
     }
 
+    const _vehicles = (owner_id) => {
+        setState({ menuEl: null });
+        dispatch(changeScreenB({
+            open: true,
+            type: 'owner-vehicles',
+            props: {
+                uid: owner_id
+            } 
+        }))
+    }
+
     const Transition = React.forwardRef((props, ref) => {
         return <Slide direction="up" ref={ref} {...props} />
     });
@@ -170,7 +181,7 @@ export default function Owners(props) {
                             {(owners.data.length > 0) &&
                                 <div className="card-body">
                                     <h6 className="m-0">
-                                        {owners.total} {(owners.total > 1) ? 'proprietários encontradas' : 'proprietário encontrada'}
+                                        {owners.total} {(owners.total > 1) ? 'proprietários encontradas' : 'proprietário encontrado'}
                                     </h6>
                                 </div>
                             }
@@ -239,7 +250,7 @@ export default function Owners(props) {
                                                                 Notas
                                                             </MenuItem>
 
-                                                            <MenuItem>
+                                                            <MenuItem onClick={() => _vehicles(item.id)}>
                                                                 <FaCar size="1.2em" className="mr-4" />
                                                                 Veículos
                                                             </MenuItem>
