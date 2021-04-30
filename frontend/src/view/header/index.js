@@ -35,6 +35,8 @@ import { changeScreenA } from '../../store/actions/navigation.action';
 export default function Header(props) {
     const dispatch = useDispatch();
 
+    const [mobile, setMobile] = React.useState(window.innerWidth < 577 ? true : false);
+
     const [state, setState] = React.useState({
         open: false
     });
@@ -44,17 +46,27 @@ export default function Header(props) {
         financeiro: false
     });
 
+    React.useEffect(() => {
+        window.addEventListener('resize', _resize); 
+    }, []);
+
+    const _resize = () => {
+        setMobile(window.innerWidth < 577 ? true : false);
+    }
+
     const handlePage = (page) => {
         dispatch(changeScreenA({
             open: true,
             type: page,
             props: {}
         }));
+
+        setState({ open: false });
     }
 
     return (
         <>
-            {(window.innerWidth < 577) 
+            {(mobile) 
                 ?
                     <AppBar position="fixed">
                         <Toolbar>
@@ -162,7 +174,11 @@ export default function Header(props) {
 
                         <Divider className="mt-2 mb-3" />
 
-                        <ListItem>
+                        <ListItem
+                            component={Link}
+                            to="/vehicles"
+                            onClick={() => setState({ open: false })}
+                        >
                             <ListItemIcon>
                                 <FaCar />
                             </ListItemIcon>
@@ -170,7 +186,7 @@ export default function Header(props) {
                             <ListItemText primary="Veículos" />                            
                         </ListItem>
 
-                        <ListItem>
+                        <ListItem onClick={() => handlePage('owners')}>
                             <ListItemIcon>
                                 <FaUsers />
                             </ListItemIcon>
