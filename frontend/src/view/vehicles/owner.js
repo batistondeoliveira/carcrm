@@ -16,7 +16,7 @@ import {
 import { MdAdd, MdDelete, MdPerson } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
 import { Confirm } from '../components';
-import { changeScreenA } from '../../store/actions/navigation.action';
+import { changeScreenA, changeScreenB } from '../../store/actions/navigation.action';
 import { indexResponse, update, updateResponse } from '../../store/actions/vehicles.action';
 
 export default function Owner(props) {
@@ -49,6 +49,16 @@ export default function Owner(props) {
         }))
     }
 
+    const _show = (item) => {
+        dispatch(changeScreenB({
+            open: true,
+            type: 'owner-show',
+            props: {
+                item: item
+            }
+        }));
+    }
+
     const _update = (owner, id) => {
         dispatch(updateResponse({
             ...item,
@@ -71,13 +81,13 @@ export default function Owner(props) {
             <List className="pb-3">
                 {(item.vehicle_owner) &&
                     <ListItem button>
-                        <ListItemAvatar>
+                        <ListItemAvatar onClick={() => _show(item.vehicle_owner)}>
                             <Avatar className="account-avatar">
                                 <MdPerson />
                             </Avatar>
                         </ListItemAvatar>
 
-                        <ListItemText className="pb-3 pt-3 m-0" primary={item.vehicle_owner.name} />
+                        <ListItemText onClick={() => _show(item.vehicle_owner)} className="pb-3 pt-3 m-0" primary={item.vehicle_owner.name} />
 
                         {(state.isDeleted === item.vehicle_owner.id) 
                             ? <CircularProgress className="mr-2" color="secondary" />
