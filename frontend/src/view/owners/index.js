@@ -282,14 +282,14 @@ export default function Owners(props) {
 
                                         <Divider />
                                     </React.Fragment>
-                                ))}
-
-                                {(isLoadMore) &&
-                                    <div className="text-center card-body">
-                                        <CircularProgress />
-                                    </div>  
-                                }
+                                ))}                                
                             </List>
+
+                            {(isLoadMore) &&
+                                <div className="text-center card-body">
+                                    <CircularProgress />
+                                </div>
+                            }
                         </>
                 }
 
