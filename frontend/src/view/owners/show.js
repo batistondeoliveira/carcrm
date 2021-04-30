@@ -2,7 +2,7 @@ import React from 'react';
 import { AppBar, Avatar, Divider, IconButton, Toolbar, Typography } from '@material-ui/core';
 import { MdKeyboardBackspace } from 'react-icons/md';
 import { useDispatch } from 'react-redux';
-import { changeScreenA } from '../../store/actions/navigation.action';
+import { changeScreenB } from '../../store/actions/navigation.action';
 import { format } from 'date-fns';
 import { zonedTimeToUtc } from 'date-fns-tz';
 
@@ -14,7 +14,7 @@ export default function OwnerShow(props) {
         <>
             <AppBar position="absolute">
                 <Toolbar>
-                    <IconButton onClick={() => dispatch(changeScreenA({ open: false }))} edge="start" color="inherit">
+                    <IconButton onClick={() => dispatch(changeScreenB({ open: false }))} edge="start" color="inherit">
                         <MdKeyboardBackspace />
                     </IconButton>
 
@@ -42,7 +42,7 @@ export default function OwnerShow(props) {
 
                     {(owner.phone) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 TELEFONE
                             </Typography>
 
@@ -54,7 +54,7 @@ export default function OwnerShow(props) {
 
                     {(owner.phone2) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 TELEFONE 2
                             </Typography>
 
@@ -66,7 +66,7 @@ export default function OwnerShow(props) {
 
                     {(owner.phone3) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 TELEFONE 3
                             </Typography>
 
@@ -78,7 +78,7 @@ export default function OwnerShow(props) {
 
                     {(owner.email) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 EMAIL
                             </Typography>
 
@@ -92,7 +92,7 @@ export default function OwnerShow(props) {
 
                     {(owner.name) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 NOME
                             </Typography>
 
@@ -104,7 +104,7 @@ export default function OwnerShow(props) {
 
                     {(owner.cpf) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 CPF
                             </Typography>
 
@@ -116,7 +116,7 @@ export default function OwnerShow(props) {
 
                     {(owner.rg) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 RG
                             </Typography>
 
@@ -128,7 +128,7 @@ export default function OwnerShow(props) {
 
                     {(owner.cnpj) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 CNPJ
                             </Typography>
 
@@ -140,7 +140,7 @@ export default function OwnerShow(props) {
 
                     {(owner.ie) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 INSCR. ESTADUAL
                             </Typography>
 
@@ -152,7 +152,7 @@ export default function OwnerShow(props) {
 
                     {(owner.birth) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 NASCIMENTO
                             </Typography>
 
@@ -166,7 +166,7 @@ export default function OwnerShow(props) {
 
                     {(owner.zipCode) &&
                         <>
-                            <Typography className="font-weigth-bold" variant="caption" color="text-secondary">
+                            <Typography className="font-weigth-bold" variant="caption" color="secondary">
                                 ENDEREÇO
                             </Typography>
 
