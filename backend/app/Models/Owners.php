@@ -24,7 +24,8 @@ class Owners extends Model
         $this->attributes['birth'] = ($value) ? Carbon::parse($value)->format('Y-m-d') : null;
     }
 
-    public function getBirthAttribute($value) {
-        return Carbon::createFromFormat('Y-m-d', $value, 'America/Sao_Paulo');        
+    public function getBirthAttribute($value) 
+    {
+        return ($value) ? Carbon::createFromFormat('Y-m-d', $value, 'America/Sao_Paulo') : null;
     }    
 }
