@@ -2,13 +2,14 @@ import React from 'react';
 import { index, destroy } from '../../store/actions/vehicles.action';
 import { changeScreenC  } from '../../store/actions/navigation.action';
 import { Link } from 'react-router-dom';
-import { Button, CircularProgress, IconButton, Menu, MenuItem, Slide, Fade } from '@material-ui/core';
+import { Button, CircularProgress, IconButton, Menu, MenuItem, Slide, Fade, Dialog } from '@material-ui/core';
 import { FaPlus, FaEllipsisV, FaClipboard, FaUser, FaLink, FaPencilAlt, FaTrash, FaShare } from 'react-icons/fa';
 import { FcOpenedFolder } from 'react-icons/fc';
 import { SCROLL, rootUrl } from '../../config/App';
 import Header from '../header';
 import { Confirm } from '../components';
 import { useDispatch, useSelector } from 'react-redux';
+import Owner from './owner';
 
 export default function Vehicles() {
     const dispatch = useDispatch();
@@ -19,7 +20,8 @@ export default function Vehicles() {
     const [ state, setState ] = React.useState({
         isDeleted: null,
         menuEl: null,
-        confirmEl: null
+        confirmEl: null,
+        ownerEl: null
     });
 
     React.useEffect(() => {
@@ -179,7 +181,7 @@ export default function Vehicles() {
                                                                 Notas
                                                             </MenuItem>
 
-                                                            <MenuItem>
+                                                            <MenuItem onClick={() => setState({ ownerEl: item.id })}>
                                                                 <FaUser size="1.2em" className="mr-4" /> 
                                                                 Proprietário
                                                             </MenuItem>
@@ -216,6 +218,18 @@ export default function Vehicles() {
                                                             onConfirm={() => _destroy(item.id)}
                                                             onClose={() => setState({ confirmEl: null })}                                                            
                                                         />
+                                                    }
+
+                                                    {(state.ownerEl) &&
+                                                        <Dialog
+                                                            open={(item.id === state.ownerEl)}
+                                                            onClose={() => setState({ ownerEl: null })}
+                                                        >
+                                                            <Owner 
+                                                                item={item}
+                                                                onClose={() => setState({ ownerEl: null })}
+                                                            />
+                                                        </Dialog>
                                                     }
                                                 </div>
                                             </div>
