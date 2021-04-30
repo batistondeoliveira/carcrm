@@ -43,19 +43,24 @@ class VehiclesController extends Controller
         ];
     }
 
-    public function index()    
+    public function index(Request $request)    
     {
         $vehicles = Vehicle::where('user_id', $this->user->id)
-            ->where('status', 1)
-            ->with(
-                'cover',
-                'vehicle_owner',
-                'vehicle_brand',
-                'vehicle_fuel',
-                'vehicle_color',
-                'vehicle_gearbox'
-            )
-            ->paginate(env('APP_PAGINATE'));
+            ->where('status', 1);
+
+        if ($request->owner_id) {
+            $vehicles->where('vehicle_owner', $request->owner_id);
+        }
+
+        $vehicles = $vehicles->with(
+            'cover',
+            'vehicle_owner',
+            'vehicle_brand',
+            'vehicle_fuel',
+            'vehicle_color',
+            'vehicle_gearbox'
+        )
+        ->paginate(env('APP_PAGINATE'));
 
         $vehicles->transform(function ($vehicle) {
             $vehicle->vehicle_model = $vehicle->vehicle_model();
