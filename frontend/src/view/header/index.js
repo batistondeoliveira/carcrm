@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { index } from '../../store/actions/app.action';
 
 import { 
     MenuList, 
@@ -47,7 +48,10 @@ export default function Header(props) {
     });
 
     React.useEffect(() => {
+        dispatch(index());
         window.addEventListener('resize', _resize); 
+
+        //eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const _resize = () => {
@@ -107,7 +111,7 @@ export default function Header(props) {
                                     </Link>
 
                                     <MenuList className="dropdown-menu">
-                                        <MenuItem className="dropdown-item">
+                                        <MenuItem onClick={() => handlePage('seo')} className="dropdown-item">
                                             Otimização para o Google
                                         </MenuItem>
 
@@ -206,7 +210,7 @@ export default function Header(props) {
 
                         <Collapse in={collapse.site} timeout="auto" unmountOnExit>
                             <List component="div" disablePadding>
-                                <ListItem>
+                                <ListItem onClick={() => handlePage('seo')}>
                                     <ListItemText className="pl-5" primary="Otimização para o Google" />
                                 </ListItem>
 
