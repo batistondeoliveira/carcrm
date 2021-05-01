@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\api\AppController;
 use App\Http\Controllers\api\NotesController;
 use App\Http\Controllers\api\OwnersController;
+use App\Http\Controllers\api\UnitsController;
 use App\Http\Controllers\api\uploads\VehicleUploadController;
 use App\Http\Controllers\api\VehiclesController;
 use App\Http\Controllers\webservice\WebServiceController;
@@ -10,8 +12,11 @@ use Illuminate\Support\Facades\Route;
 Route::apiResources([
     'vehicles' => VehiclesController::class,
     'notes' => NotesController::class,
-    'owners' => OwnersController::class
+    'owners' => OwnersController::class,
+    'units' => UnitsController::class
 ]);
+
+Route::resource('app', AppController::class);
 
 Route::prefix('upload')->group(function () {
     Route::resource('vehicle', VehicleUploadController::class)->only(['store', 'update', 'destroy']);
