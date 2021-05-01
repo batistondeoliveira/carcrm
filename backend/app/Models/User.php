@@ -13,32 +13,34 @@ class User extends Authenticatable
 {
     use HasFactory, HasApiTokens, Notifiable, SoftDeletes;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'name',
-        'email',
+    protected $guarded = [
+        'id',
+        'plan_id',
         'password',
+        'remember_token',
+        'next_expiration',
+        'disabled_account',
+        'delete_account',
+        'email_verified_at',
+        'deleted_at',
+        'expira',
+        'delete',
+        'disable',
+        'status'
     ];
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
     protected $hidden = [
         'password',
         'remember_token',
+        'next_expiration',
+        'disabled_account',
+        'delete_account',
+        'email_verified_at',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
-    /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
