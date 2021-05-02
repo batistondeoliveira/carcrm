@@ -62,3 +62,37 @@ export const update = (data) => dispatch => {
             }
         });
 }
+
+//UPLOAD LOGO
+export const uploadLogo = (item) => dispatch => {
+    return HttpAuth.post('/upload/logo', item).then(response => {
+        if (typeof response !== 'undefined') {
+            if (response.data.logo) {
+                dispatch(changeNotify({
+                    open: true,
+                    msg: 'Logo enviado com sucesso',
+                    class: 'success'
+                }));
+
+                dispatch(change({ logo: response.data.logo }));
+            }
+        }
+    })
+}
+
+//DESTROY LOGO
+export const destroyLogo = (id) => dispatch => {
+    return HttpAuth.delete('/upload/logo/' + id).then(response => {
+        if (typeof response !== 'undefined') {
+            if (response.data.status === 200) {
+                dispatch(changeNotify({
+                    open: true,
+                    msg: 'Logo apagada com sucesso',
+                    class: 'success'
+                }));
+
+                dispatch(change({ logo: null }));
+            }
+        }
+    })
+}

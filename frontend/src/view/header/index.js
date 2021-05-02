@@ -119,7 +119,7 @@ export default function Header(props) {
                                             Unidades e Telefones
                                         </MenuItem>
 
-                                        <MenuItem className="dropdown-item">
+                                        <MenuItem onClick={() => handlePage('logo')} className="dropdown-item">
                                             Minha Logo
                                         </MenuItem>
 
@@ -143,7 +143,7 @@ export default function Header(props) {
                                             Meu Plano
                                         </MenuItem>
 
-                                        <MenuItem className="dropdown-item">
+                                        <MenuItem onClick={() => handlePage('logo')} className="dropdown-item">
                                             Minhas Transações
                                         </MenuItem>                                    
                                     </MenuList>
