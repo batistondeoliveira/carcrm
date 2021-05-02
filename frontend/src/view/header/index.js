@@ -115,7 +115,7 @@ export default function Header(props) {
                                             Otimização para o Google
                                         </MenuItem>
 
-                                        <MenuItem className="dropdown-item">
+                                        <MenuItem onClick={() => handlePage('units')} className="dropdown-item">
                                             Unidades e Telefones
                                         </MenuItem>
 
@@ -214,7 +214,7 @@ export default function Header(props) {
                                     <ListItemText className="pl-5" primary="Otimização para o Google" />
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem onClick={() => handlePage('units')}>
                                     <ListItemText className="pl-5" primary="Unidades e Telefones" />
                                 </ListItem>
 

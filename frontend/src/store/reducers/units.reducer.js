@@ -17,7 +17,7 @@ export default (state = initialState, { type, payload }) => {
                 ...state, 
                 units: [
                     ...[payload],
-                    state.units
+                    ...state.units                                                        
                 ]
             }
 
@@ -28,10 +28,9 @@ export default (state = initialState, { type, payload }) => {
 
             return {
                 ...state,
-                units: {
-                    ...state.units,
-                    data: state.units
-                }
+                units: [
+                    ...state.units                    
+                ]
             }
 
         case actionTypes.DESTROY:
@@ -40,6 +39,15 @@ export default (state = initialState, { type, payload }) => {
                 units: state.units.filter(item => item.id !== payload)
             }
         
+        case actionTypes.CHANGE:
+            return {
+                ...state,
+                unit: (payload === 'clear') ? {} : {
+                    ...state.unit,
+                    ...payload
+                }
+            } 
+
         case actionTypes.SUCCESS:
             return { 
                 ...state, 

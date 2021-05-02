@@ -1,5 +1,6 @@
 import { HttpAuth } from '../../config/Http';
 import { changeLoading  } from './loading.action';
+import { changeNotify } from './notify.action';
 
 export const actionTypes = {
     INDEX: 'UNIT_INDEX',
@@ -50,13 +51,20 @@ export const store = (data) => dispatch => {
         .then(response => {
             dispatch(changeLoading({ open: false }));
 
-            if (response.data.error) {
-                dispatch(error(response.data.error));
-            }
+            if (typeof response !== 'undefined') {
+                if (response.data.error) {
+                    dispatch(error(response.data.error));
+                }
 
-            if (response.data.id) {
-                dispatch(storeResponse(response.data));
-                dispatch(success(true));
+                if (response.data.id) {
+                    dispatch(storeResponse(response.data));
+                    dispatch(success(true));
+                    dispatch(changeNotify({ 
+                        open: true, 
+                        msg: 'Unidade cadastrada com sucesso',
+                        class: 'success'
+                    }));
+                }
             }
         });
 };
@@ -100,7 +108,7 @@ export const destroyResponse = (payload) => ({
 });
 
 export const destroy = (id) => dispatch => {
-    return HttpAuth.delete('/units' + id)
+    return HttpAuth.delete('/units/' + id)
         .then(response => typeof response !== 'undefined' && dispatch(destroyResponse(id)));
 };
 
