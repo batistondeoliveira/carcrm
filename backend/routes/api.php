@@ -4,6 +4,7 @@ use App\Http\Controllers\api\AppController;
 use App\Http\Controllers\api\NotesController;
 use App\Http\Controllers\api\OwnersController;
 use App\Http\Controllers\api\UnitsController;
+use App\Http\Controllers\api\uploads\LogoController;
 use App\Http\Controllers\api\uploads\VehicleUploadController;
 use App\Http\Controllers\api\VehiclesController;
 use App\Http\Controllers\webservice\WebServiceController;
@@ -20,6 +21,7 @@ Route::resource('app', AppController::class);
 
 Route::prefix('upload')->group(function () {
     Route::resource('vehicle', VehicleUploadController::class)->only(['store', 'update', 'destroy']);
+    Route::resource('logo', LogoController::class)->only(['store', 'destroy']);
 });
 
 Route::get('vehicles/{vehicle_type}/brand', [VehiclesController::class, 'brand']);
