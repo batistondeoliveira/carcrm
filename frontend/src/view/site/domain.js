@@ -1,7 +1,7 @@
 import React from 'react';
 import { AppBar, Button, IconButton, InputAdornment, TextField, Toolbar, Typography } from '@material-ui/core';
 import { FaSave } from 'react-icons/fa';
-import { MdKeyboardBackspace, MdToday } from 'react-icons/md';
+import { MdKeyboardBackspace } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeScreenA } from '../../store/actions/navigation.action';
 import { change, success, update, validateSubdomain } from '../../store/actions/app.action';
