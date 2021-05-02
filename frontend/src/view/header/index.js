@@ -127,7 +127,7 @@ export default function Header(props) {
                                             Domínio
                                         </MenuItem>
 
-                                        <MenuItem className="dropdown-item">
+                                        <MenuItem onClick={() => handlePage('settings')} className="dropdown-item">
                                             Configurações
                                         </MenuItem>
                                     </MenuList>
@@ -226,7 +226,7 @@ export default function Header(props) {
                                     <ListItemText className="pl-5" primary="Domínio" />
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem onClick={() => handlePage('settings')}>
                                     <ListItemText className="pl-5" primary="Configurações" />
                                 </ListItem>
                             </List>
