@@ -295,9 +295,7 @@ export default function Owners(props) {
 
                 <Fab onClick={() => _create()} className="fab-bottom-right mr-3 mb-3" color="primary">
                     <FaPlus />
-                </Fab>
-
-                  
+                </Fab>                  
             </div>
         </>
     )
