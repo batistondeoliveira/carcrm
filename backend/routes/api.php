@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\AppController;
 use App\Http\Controllers\api\NotesController;
 use App\Http\Controllers\api\OwnersController;
+use App\Http\Controllers\api\PayController;
 use App\Http\Controllers\api\UnitsController;
 use App\Http\Controllers\api\uploads\LogoController;
 use App\Http\Controllers\api\uploads\VehicleUploadController;
@@ -18,6 +19,10 @@ Route::apiResources([
 ]);
 
 Route::resource('app', AppController::class);
+
+Route::prefix('pay')->group(function () {
+    Route::get('plans', [PayController::class, 'plans']);    
+});
 
 Route::prefix('upload')->group(function () {
     Route::resource('vehicle', VehicleUploadController::class)->only(['store', 'update', 'destroy']);
