@@ -69,14 +69,14 @@ export default function Payment() {
     }, []);
 
     const setPaymentMethod = (status, response) => {
-        if (status == 200) {            
+        if (status === 200) {            
             document.getElementById('paymentMethodId').value = response[0].id;
      
             //getIssuers(paymentMethod.id); retorna os parcelamentos
 
             document.getElementById('secure_thumbnail').src = response[0].secure_thumbnail;
         } else {
-            alert('payment method info error: ${response}');
+            alert("payment method info error: " + response);
         }
     }
 
@@ -103,7 +103,7 @@ export default function Payment() {
     }
 
     const setCardTokenAndPay = (status, response) => {
-        if (status == 200 || status == 201) {
+        if (status === 200 || status === 201) {
             dispatch(payCard({
                 token: response.id,
                 payment_method_id: document.getElementById('paymentMethodId').value,
