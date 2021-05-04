@@ -67,6 +67,14 @@ a, a:hover {
     color: #444;
 }
 
+svg {
+    flex-shrink: 0;
+}
+
+.pointer, .pointer * {
+    cursor: pointer;
+}
+
 .label-custom {
     color: #2c2c31;
     font-weight: 600;
@@ -165,4 +173,15 @@ a, a:hover {
 .account-avatar {
     color: #1e88e5 !important;
     background-color: #bbdefb !important;
+}
+
+.cvv_info:after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 8px;
+    top: 17px;
+    width: 37px;
+    height: 25px;
+    background: url('http://localhost:3000/payment-screen-sprites.png') -737px 0 no-repeat;
 }
