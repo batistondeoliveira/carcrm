@@ -7,6 +7,7 @@ const Register = lazy(() => import('./view/register'));
 const Vehicles = lazy(() => import('./view/vehicles'));
 const VehicleEdit = lazy(() => import('./view/vehicles/edit'));
 const Pay = lazy(() => import('./view/pay'));
+const Transactions = lazy(() => import('./view/transactions'));
 
 const Routes = () => (
     <Router>
@@ -16,6 +17,7 @@ const Routes = () => (
                 <Route exact path="/vehicles/create" component={VehicleEdit} /> 
                 <Route exact path="/vehicles/:id/edit" component={VehicleEdit} /> 
                 <Route exact path="/pay" component={Pay} /> 
+                <Route exact path="/transactions" component={Transactions} /> 
                 <Route exact path="/register" component={Register} /> 
                 <Route exact path="/login" component={Auth} /> 
                 <Route exact path="/" component={Auth} />                                

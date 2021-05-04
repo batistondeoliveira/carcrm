@@ -147,7 +147,11 @@ export default function Header(props) {
                                             Meu Plano
                                         </MenuItem>
 
-                                        <MenuItem onClick={() => handlePage('logo')} className="dropdown-item">
+                                        <MenuItem 
+                                            component={Link}
+                                            to="/transactions"
+                                            className="dropdown-item"
+                                        >
                                             Minhas Transações
                                         </MenuItem>                                    
                                     </MenuList>
@@ -222,7 +226,7 @@ export default function Header(props) {
                                     <ListItemText className="pl-5" primary="Unidades e Telefones" />
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem onClick={() => handlePage('logo')}>
                                     <ListItemText className="pl-5" primary="Minha Logo" />
                                 </ListItem>
 
@@ -258,7 +262,11 @@ export default function Header(props) {
                                     <ListItemText className="pl-5" primary="Meu Plano" />
                                 </ListItem>
 
-                                <ListItem>
+                                <ListItem
+                                    component={Link}
+                                    to="/transactions"
+                                    onClick={() => setState({ open: false })}
+                                >
                                     <ListItemText className="pl-5" primary="Minhas Transações" />
                                 </ListItem>                                
                             </List>
