@@ -4,6 +4,7 @@ use App\Http\Controllers\api\AppController;
 use App\Http\Controllers\api\NotesController;
 use App\Http\Controllers\api\OwnersController;
 use App\Http\Controllers\api\PayController;
+use App\Http\Controllers\api\TransactionsController;
 use App\Http\Controllers\api\UnitsController;
 use App\Http\Controllers\api\uploads\LogoController;
 use App\Http\Controllers\api\uploads\VehicleUploadController;
@@ -19,9 +20,12 @@ Route::apiResources([
 ]);
 
 Route::resource('app', AppController::class);
+Route::resource('transactions', TransactionsController::class)->only('index', 'show');
 
 Route::prefix('pay')->group(function () {
     Route::get('plans', [PayController::class, 'plans']);    
+    Route::post('card', [PayController::class, 'card']);    
+    Route::post('pec', [PayController::class, 'pec']);    
 });
 
 Route::prefix('upload')->group(function () {
