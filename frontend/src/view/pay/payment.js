@@ -13,6 +13,7 @@ import {
 import { Button, InputAdornment, TextField } from '@material-ui/core';
 import MaskedInput from 'react-text-mask';
 import { MdArrowBack, MdCreditCard, MdEmail } from 'react-icons/md';
+import { Redirect } from 'react-router';
 
 const TextMaskCustom = (props) => {
     const { inputRef, ...other } = props;
@@ -381,6 +382,10 @@ export default function Payment() {
                 >
                     Realizar pagamento
                 </Button>
+
+                {(success) &&
+                    <Redirect to={'/transactions/' + success} />
+                }
             </div>
         </form>
     )
