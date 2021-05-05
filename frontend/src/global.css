@@ -185,3 +185,15 @@ svg {
     height: 25px;
     background: url('http://localhost:3000/payment-screen-sprites.png') -737px 0 no-repeat;
 }
+
+.pending {
+    color: #17a2b8 !important;
+}
+
+.approved, .authorized, .refunded, .charged_back {
+    color: #28a745 !important;
+}
+
+.in_mediation, .cancelled, .rejected {
+    color: #dc3545 !important;
+}
