@@ -18,6 +18,7 @@ class PayController extends Controller
 
         $this->access_token = env('MP_ACCESS_TOKEN');
     }
+    
     public function plans()
     {
         $plans = Plans::all();
